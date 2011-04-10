@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+
+	<title>monGoals</title>
+
+	<meta name="description" content="monGoals" />
+	<meta name="author" content="Radek Stepan" />
+
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div id="wrapper">
+    <div id="content">
+        <menu>
+            <ul>
+                <li><a href="{{ url_for('goals.detail') }}">Detail</a></li>
+            </ul>
+        </menu>
+    </div>
+</div>
+
+</body>
+</html>
