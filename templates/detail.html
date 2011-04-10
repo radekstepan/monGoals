@@ -8,19 +8,119 @@
 	<meta name="description" content="monGoals" />
 	<meta name="author" content="Radek Stepan" />
 
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="{{ url_for('static', filename='js/raphael.js') }}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ url_for('static', filename='js/g.raphael.js') }}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ url_for('static', filename='js/g.line.js') }}" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript" charset="utf-8">
+        window.onload = function () {
+            var r = Raphael("holder");
+            var x = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+            var y = [0,0,0,20,20,30,7,0,5,10,20,30,15,60,30,7,0,5,10]
+            r.g.linechart(0, 0, 437, 100, x, y, { shade:true, "colors":["#3CC5DE"] });
+        };
+    </script>
 </head>
 <body>
 
-<div id="wrapper">
-    <div id="content">
-        <menu>
-            <ul>
-                <li><a href="{{ url_for('goals.detail') }}">Detail</a></li>
-            </ul>
-        </menu>
-    </div>
+<header id="top">
+    <a class="new" href="#">Create a <strong>new</strong> goal</a>
+    <a href="#">&larr; Back to all goals</a>
+</header>
+
+<div id="wrap">
+    <article>
+        <header class="section">
+            <h1 class="goal"><a href="#">Log progress &rarr;</a><span>Achieve greater inner balance</span></h1>
+        </header>
+
+        <div id="meta" class="section">
+            <div class="progress">
+                <div class="inner red" style="width:59%;"></div>
+                <div class="percentage">59%</div>
+            </div>
+            <div class="box">
+                <div class="upper">30p</div>
+                <div class="lower">achieved</div>
+            </div>
+            <div class="box">
+                <div class="upper">60p</div>
+                <div class="lower">needed</div>
+            </div>
+            <div class="box">
+                <div class="upper">20p</div>
+                <div class="lower">remaining</div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="section">
+            <div id="currency" class="half second">
+                <h2>Currency</h2>
+                <table>
+                    <tr>
+                        <td class="dark"><b>3¼<span class="light">p</span></b></td>
+                        <td>1 date with a lovely lady</td>
+                    </tr>
+                    <tr class="last">
+                        <td class="dark"><b>1<span class="light">p</span></b></td>
+                        <td>1 Facebook friend</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="chart" class="half first">
+                <h2>Progress over time</h2>
+                <div id="holder"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="section">
+            <div id="reward" class="half second">
+                <h2>Reward</h2>
+                <p>Hackintosh build</p>
+                <center><img src="{{ url_for('static', filename='img/corei5.jpg') }}" style="max-width:490px;" /></center>
+            </div>
+
+            <div id="description" class="half first">
+                <h2>Description</h2>
+                <p>We estimate that Freckle will save, recover, and earn a single person at least 30 minutes per month (and
+                    probably more when it comes to making those smart decisions!). So if you charge $25/hr or more, the Solo
+                    plan will pay for itself. How about that?</p>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="section">
+            <div id="progress">
+                <h2>Progress</h2>
+                <table>
+                    <tr>
+                        <td class="dark"><b>3¼<span class="light">p</span></b></td>
+                        <td>
+                            1 date with a lovely lady
+                            <p class="semi">We estimate that Freckle will save, recover, and earn a single person at
+                                least 30 minutes per month (and probably more when it comes to making those smart
+                                decisions!). So if you charge $25/hr or more, the Solo plan will pay for itself. How
+                                about that?</p>
+                        </td>
+                        <td><span class="nobr">today</span></td>
+                    </tr>
+                    <tr class="last">
+                        <td class="dark"><b>-1<span class="light">p</span></b></td>
+                        <td>1 Facebook friend</td>
+                        <td><span class="nobr">11 Mar</span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </article>
 </div>
 
 </body>

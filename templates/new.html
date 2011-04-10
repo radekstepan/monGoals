@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+
+	<title>monGoals</title>
+
+	<meta name="description" content="monGoals" />
+	<meta name="author" content="Radek Stepan" />
+
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header id="top">
+    <a href="#">&larr; Back to all goals</a>
+</header>
+
+<div id="wrap">
+    <article>
+        <header class="section">
+            <h1 class="goal">Crete a new goal for yourself</h1>
+        </header>
+
+        <div id="form" class="section">
+            <form>
+                <div class="half second">
+                    <h2>Currency</h2>
+                    <div>
+                        <label>Value and name <span>Through which steps will you accomplish your goal?</span></label>
+                        <select name="currency-value">
+                            <option value="0">0p</option>
+                        </select>
+                        <input type="text" name="currency-name">
+                    </div>
+
+                    <a href="#">Add another currency</a>
+                </div>
+
+                <div class="half first">
+                    <h2>About your goal</h2>
+                    <div>
+                        <label>Name</label>
+                        <input type="text" name="name">
+                    </div>
+                    <div>
+                        <label>Target date</label>
+                        <input type="text" name="date">
+                    </div>
+                    <div>
+                        <label>Number of points needed <span>See currency</span></label>
+                        <input type="text" name="points">
+                    </div>
+                    <div>
+                        <label>Description <span>How important is the goal to you?</span></label>
+                        <textarea name="description" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="clear"></div>
+
+                <div class="half first">
+                    <h2>What will be your reward?</h2>
+                    <div>
+                        <label>Image <span>The URL to the image file</span></label>
+                        <input type="text" name="name">
+                    </div>
+                    <div>
+                        <label>Description</label>
+                        <textarea name="description" rows="2"></textarea>
+                    </div>
+                    <input type="submit" value="Create your goal">
+                </div>
+                <div class="clear"></div>
+            </form>
+        </div>
+    </article>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+
+	<title>monGoals</title>
+
+	<meta name="description" content="monGoals" />
+	<meta name="author" content="Radek Stepan" />
+
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header id="top">
+    <a class="new" href="#">Create a <strong>new</strong> goal</a>
+    <a href="#">&larr; Back to "Achieve greater inner balance"</a>
+</header>
+
+<div id="wrap">
+    <article>
+        <header class="section">
+            <h1 class="goal">Log entry</h1>
+        </header>
+
+        <div class="section">
+            <div id="currency" class="half second">
+                <h2>Currency</h2>
+                <table>
+                    <tr>
+                        <td class="dark"><b>3¼<span class="light">p</span></b></td>
+                        <td>1 date with a lovely lady</td>
+                    </tr>
+                    <tr class="last">
+                        <td class="dark"><b>1<span class="light">p</span></b></td>
+                        <td>1 Facebook friend</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="form" class="half first">
+                <h2>Enter progress so far</h2>
+                <form>
+                    <div>
+                        <label>Date</label>
+                        <input type="text" name="date">
+                    </div>
+                    <div>
+                        <label>Points</label>
+                        <select name="points">
+                            <option value="0">2p Something rad</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Description <span>Optional</span></label>
+                        <textarea name="description" rows="3"></textarea>
+                    </div>
+                    <input type="submit" value="Save entry">
+                </form>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </article>
+</div>
+
+</body>
+</html>

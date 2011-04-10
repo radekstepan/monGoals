@@ -10,9 +10,21 @@ from models.goals import Goals
 
 goals = Module(__name__)
 
+@goals.route('/')
+def list():
+    return render_template('list.html', elmo="elmo")
+
+@goals.route('/new')
+def new():
+    return render_template('new.html', elmo="elmo")
+
 @goals.route('/goal')
 def detail():
     if (True):
         return render_template('detail.html', elmo="elmo")
     else:
         return redirect(url_for('goals.detail'))
+
+@goals.route('/log')
+def log():
+    return render_template('log.html', elmo="elmo")
