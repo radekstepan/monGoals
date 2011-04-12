@@ -1,0 +1,39 @@
+body { color:#000; font-family:Helvetica, "Helvetica Neue", Arial, sans-serif; font-size:15px; line-height:28px;
+    background:#FFF; margin:0px; padding:0px; }
+
+header { background:#000; font-size:15px; font-weight:bold; color:#FFF; padding:2px 12px; margin-bottom:20px; }
+    header a { float:right; color:#FFF; }
+
+#meta { ; }
+    #meta div { float:left; font-size:34px; font-weight:bold; padding:0 12px; }
+        #meta div span { font-size:14px; }
+            #meta div span.red { color:#BC4E3D; }
+            #meta div span.green { color:#8BB551; }
+        #meta div p { color:#919191; text-transform:uppercase; font-size:18px; }
+        #meta div.chart { display:inline; width:500px; height:60px; }
+
+article { margin-top:20px; }
+
+div.part { width:648px; float:left; }
+
+div.column { float:left; padding:2px 12px; width:300px; margin-bottom:20px; }
+    div.column div.chart { width:300px; height:200px; }
+    div.column h2 { font-size:18px; font-weight:bold; line-height:20px; }
+    div.column h3 { font-size:15px; color:#919191; text-transform:uppercase; font-weight:bold; }
+    div.column p { line-height:24px; }
+        div.column p.light { color:#919191; }
+    div.column table { width:100%; }
+        div.column table tr { border-bottom:1px solid #B1B1B1; }
+            div.column table tr td { padding:0 8px; }
+                div.column table tr td b { font-weight:bold; }
+                div.column table tr td span.nobr { white-space:nowrap; }
+
+div.column.wide { width:624px; }
+
+form { display:none; margin-left:12px; }
+    form input, footer form select { border:1px solid #919191; padding:2px; background:#FFF; }
+    form label { display:block; }
+    form div { margin-bottom:10px; }
+    form input[type="submit"] { cursor:pointer; }
+
+header form { float:right; }
