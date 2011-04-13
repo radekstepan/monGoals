@@ -26,9 +26,9 @@ def create_app(database, drop=False):
     app.register_module(goals)
 
     # template filters
-    @app.template_filter('timestampformat')
-    def timestamp_format(value):
-        return value
+    @app.template_filter('fn')
+    def fn():
+        pass
 
     return app
 

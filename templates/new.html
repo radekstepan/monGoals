@@ -23,6 +23,14 @@
                     jQuery(this).remove();
                 }
             });
+            jQuery('a.switcher').click(function(e) {
+                jQuery('div.variant:hidden').show();
+                jQuery(this).parent().parent().hide();
+                var newVariant = (jQuery('input.variant').val() == 'points') ? 'value' : 'points';
+                jQuery('input.variant').val(newVariant);
+
+                e.preventDefault();
+            });
         });
     </script>
 </head>
@@ -57,22 +65,42 @@
                 <input type="submit" value="Save">
             </div>
             <div class="column">
-                <h2>Points currency</h2>
-                <label>Points for progress</label>
-                {% for number in range(10) %}
-                    <div class="currency" style="{% if not loop.first %}display:none;{% endif %}">
-                        <div class="inline">
-                            <select name="currency-points[{{ number }}]">
-                                <option>1</option>
-                            </select>
-                        </div>
-                        <div class="inline">
-                            <input type="text" name="currency-name[{{ number }}]">
-                        </div>
-                        <div class="clear"></div>
+                <input type="hidden" class="variant" name="variant" value="points">
+                <div class="variant">
+                    <h2>Points <a class="switcher" href="#">or target value?</a></h2>
+                    <div>
+                        <label>Number of points needed</label>
+                        <input type="text" name="points[target]">
                     </div>
-                {% endfor %}
-                <input type="button" class="more" value="Add more">
+                    <label>Currency for progress</label>
+                    {% for number in range(10) %}
+                        <div class="currency" style="{% if not loop.first %}display:none;{% endif %}">
+                            <div class="inline">
+                                <select name="points[currency-{{ number }}]">
+                                    {% for p in fibonacci %}
+                                        <option value="{{ p }}">{{ p }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="inline">
+                                <input type="text" name="points[name-{{ number }}]">
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    {% endfor %}
+                    <input type="button" class="more" value="Add more">
+                </div>
+                <div class="variant" style="display:none;">
+                    <h2>Target value <a class="switcher" href="#">or points?</a></h2>
+                    <div>
+                        <label>Starting value</label>
+                        <input type="text" name="current">
+                    </div>
+                    <div>
+                        <label>Target value</label>
+                        <input type="text" name="target">
+                    </div>
+                </div>
             </div>
         </div>
     </form>

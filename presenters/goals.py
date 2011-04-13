@@ -16,7 +16,8 @@ def all():
 
 @goals.route('/new')
 def new():
-    return render_template('new.html', elmo="elmo")
+    fibonacci = [1,2,3,5,8,13,20]
+    return render_template('new.html', **locals())
 
 @goals.route('/goal')
 def goal():

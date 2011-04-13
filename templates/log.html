@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+
+	<title>monGoals</title>
+
+	<meta name="description" content="monGoals" />
+	<meta name="author" content="Radek Stepan" />
+
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+
+<header>
+    <a href="{{ url_for('goals.goal') }}">&larr; Back to the goal</a>
+    Log progress
+</header>
+
+<article>
+    <form action="{{ url_for('goals.log') }}" method=post>
+        <div class="part">
+            <div class="column">
+                <div>
+                    <label>Points</label>
+                    <select name="points">
+                        <option>1p Something great here</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Description</label>
+                    <textarea name="description"></textarea>
+                </div>
+                <div>
+                    <label>Date</label>
+                    <input type="text" name="date">
+                </div>
+                <input type="submit" value="Save">
+            </div>
+        </div>
+    </form>
+</article>
+
+</body>
+</html>
