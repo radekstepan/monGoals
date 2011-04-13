@@ -11,73 +11,72 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
 
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/reset.css') }}">
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/main.css') }}">
+
+    <script src="{{ url_for('static', filename='js/jquery-1.5.2.min.js') }}" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            jQuery('input.more').click(function() {
+                jQuery('div.currency:hidden').first().show();
+                if (jQuery('div.currency:hidden').length == 0) {
+                    jQuery(this).remove();
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 
-<header id="top">
-    <a href="#">&larr; Back to all goals</a>
+<header>
+    <a href="{{ url_for('goals.all') }}">&larr; Back to all goals</a>
+    New goal
 </header>
 
-<div id="wrap">
-    <article>
-        <header class="section">
-            <h1 class="goal">Crete a new goal for yourself</h1>
-        </header>
-
-        <div id="form" class="section">
-            <form>
-                <div class="half second">
-                    <h2>Currency</h2>
-                    <div>
-                        <label>Value and name <span>Through which steps will you accomplish your goal?</span></label>
-                        <select name="currency-value">
-                            <option value="0">0p</option>
-                        </select>
-                        <input type="text" name="currency-name">
-                    </div>
-
-                    <a href="#">Add another currency</a>
+<article>
+    <form action="{{ url_for('goals.new') }}" method=post>
+        <div class="part">
+            <div class="column">
+                <h2>About goal</h2>
+                <div>
+                    <label>Name</label>
+                    <input type="text" name="name">
                 </div>
-
-                <div class="half first">
-                    <h2>About your goal</h2>
-                    <div>
-                        <label>Name</label>
-                        <input type="text" name="name">
-                    </div>
-                    <div>
-                        <label>Target date</label>
-                        <input type="text" name="date">
-                    </div>
-                    <div>
-                        <label>Number of points needed <span>See currency</span></label>
-                        <input type="text" name="points">
-                    </div>
-                    <div>
-                        <label>Description <span>How important is the goal to you?</span></label>
-                        <textarea name="description" rows="3"></textarea>
-                    </div>
+                <div>
+                    <label>Description</label>
+                    <textarea name="description"></textarea>
                 </div>
-                <div class="clear"></div>
-
-                <div class="half first">
-                    <h2>What will be your reward?</h2>
-                    <div>
-                        <label>Image <span>The URL to the image file</span></label>
-                        <input type="text" name="name">
-                    </div>
-                    <div>
-                        <label>Description</label>
-                        <textarea name="description" rows="2"></textarea>
-                    </div>
-                    <input type="submit" value="Create your goal">
+                <div>
+                    <label>Due date</label>
+                    <input type="text" name="date">
                 </div>
-                <div class="clear"></div>
-            </form>
+                <div>
+                    <label>Reward file name</label>
+                    <input type="text" name="file">
+                </div>
+                <input type="submit" value="Save">
+            </div>
+            <div class="column">
+                <h2>Points currency</h2>
+                <label>Points for progress</label>
+                {% for number in range(10) %}
+                    <div class="currency" style="{% if not loop.first %}display:none;{% endif %}">
+                        <div class="inline">
+                            <select name="currency-points[{{ number }}]">
+                                <option>1</option>
+                            </select>
+                        </div>
+                        <div class="inline">
+                            <input type="text" name="currency-name[{{ number }}]">
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                {% endfor %}
+                <input type="button" class="more" value="Add more">
+            </div>
         </div>
-    </article>
-</div>
+    </form>
+</article>
 
 </body>
 </html>

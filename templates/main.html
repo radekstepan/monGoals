@@ -20,60 +20,38 @@
 
     <script type="text/javascript" charset="utf-8">
         jQuery(document).ready(function() {
+            // 'fetch' colors from css
+            var greenColor = jQuery('<div></div>').hide().addClass("green").css('color');
+            var redColor = jQuery('<div></div>').hide().addClass("red").css('color');
+            var blueColor = jQuery('<div></div>').hide().addClass("blue").css('color');
+
             var r = Raphael("chart-1");
             var x = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35]
             var y = [0,0,0,20,20,30,7,0,5,10,20,30,15,60,30,7,0,5,10,0,0,0,20,20,30,0,0,0,20,20,30,70,90]
-            r.g.linechart(0, 100, 300, 100, x, y, { shade:true, "colors":["#BC4E3D"] });
+            r.g.linechart(0, 100, 300, 100, x, y, { shade:true, "colors":[redColor] });
 
             var r = Raphael("chart-2");
             var x = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35]
             var y = [10,60,30,7,0,5,10,0,0,0,0,0,20,20,30,70,90,0,20,20,30,7,0,5,10,20,30,0,0,20,20,30,180]
-            r.g.linechart(0, 0, 300, 200, x, y, { shade:true, "colors":["#8BB551"] });
+            r.g.linechart(0, 0, 300, 200, x, y, { shade:true, "colors":[greenColor] });
 
             var r = Raphael("chart-4");
             var x = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35]
             var y = [10,60,30,7,0,5,10,0,0,0,0,0,20,20,30,70,90,0,20,20,30,7,0,5,10,20,30,0,0,20,20,30,180]
-            r.g.linechart(0, 0, 300, 200, x, y, { shade:true, "colors":["#8BB551"] });
+            r.g.linechart(0, 0, 300, 200, x, y, { shade:true, "colors":[greenColor] });
 
             var r = Raphael("chart-3");
             var x = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35]
             var y = [10,60,30,7,0,5,10,0,0,0,0,0,20,20,30,70,90,0,20,20,30,7,0,5,10,20,30,0,0,20,20,30,180]
-            r.g.linechart(0, 0, 500, 60, x, y, { shade:true, "colors":["#3CC5DE"] });
-
-            jQuery('header a').click(function(e) {
-                jQuery('header form').toggle();
-                e.preventDefault();
-            });
-            jQuery('footer a').click(function(e) {
-                jQuery('footer form').toggle();
-                e.preventDefault();
-            });
+            r.g.linechart(0, 0, 500, 60, x, y, { shade:true, "colors":[blueColor] });
         });
     </script>
 </head>
 <body>
 
 <header>
-    <a href="#">New goal</a>
-    <form>
-        <div>
-            <label>Name</label>
-            <input type="text">
-        </div>
-        <div>
-            <label>Points needed</label>
-            <input type="text">
-        </div>
-        <div>
-            <label>Due date</label>
-            <input type="text">
-        </div>
-        <div>
-            <input type="submit">
-        </div>
-    </form>
+    <a href="{{ url_for('goals.new') }}">New goal</a>
     Your goals
-    <div class="clear"></div>
 </header>
 
 <div id="meta">
@@ -97,21 +75,29 @@
 <div class="clear"></div>
 
 <article>
-    <div class="column">
-        <h2>Achieve greater inner balance</h2>
-        <h3>in 365 days, started 20 days ago</h3>
-        <div id="chart-1" class="chart"></div>
-    </div>
-    <div class="column">
-        <h2>Stop the nail biting</h2>
-        <h3>in 20 days, started today</h3>
-        <div id="chart-2" class="chart"></div>
-    </div>
-    <div class="column">
-        <h2>Make more love to my woman</h2>
-        <h3>in 1 day, started 14 days ago</h3>
-        <div id="chart-4" class="chart"></div>
-    </div>
+    <a href="{{ url_for('goals.goal') }}">
+        <div class="column">
+            <h2>Achieve greater inner balance</h2>
+            <h3>in 365 days, started 20 days ago</h3>
+            <div id="chart-1" class="chart"></div>
+        </div>
+    </a>
+
+    <a href="{{ url_for('goals.goal') }}">
+        <div class="column">
+            <h2>Stop the nail biting</h2>
+            <h3>in 20 days, started today</h3>
+            <div id="chart-2" class="chart"></div>
+        </div>
+    </a>
+
+    <a href="{{ url_for('goals.goal') }}">
+        <div class="column">
+            <h2>Make more love to my woman</h2>
+            <h3>in 1 day, started 14 days ago</h3>
+            <div id="chart-4" class="chart"></div>
+        </div>
+    </a>
 </article>
 
 </body>

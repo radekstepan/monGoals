@@ -11,17 +11,17 @@ from models.goals import Goals
 goals = Module(__name__)
 
 @goals.route('/')
-def list():
-    return render_template('list.html', elmo="elmo")
+def all():
+    return render_template('main.html', elmo="elmo")
 
 @goals.route('/new')
 def new():
     return render_template('new.html', elmo="elmo")
 
 @goals.route('/goal')
-def detail():
+def goal():
     if (True):
-        return render_template('detail.html', elmo="elmo")
+        return render_template('goal.html')
     else:
         return redirect(url_for('goals.detail'))
 
