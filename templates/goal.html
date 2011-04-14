@@ -41,17 +41,25 @@
 </header>
 
 <div id="meta">
-    <div>
+    <div class="red">
         5p <span class="red">(-2.5%)</span>
         <p>today</p>
     </div>
-    <div>
+    <div class="red">
         27p <span class="green">(+5.7%)</span>
         <p>last 7 days</p>
     </div>
-    <div>
+    <div class="red">
         193p <span class="green">(+255.7%)</span>
         <p>last 30 days</p>
+    </div>
+    <div class="red">
+        25p <span></span>
+        <p>remaining</p>
+    </div>
+    <div>
+        {{ goal.points.target }}p <span></span>
+        <p>total</p>
     </div>
 </div>
 
@@ -61,40 +69,36 @@
     <div class="part">
         <div class="column">
             <h2>Description</h2>
-            <p>We estimate that Freckle will save, recover, and earn a single person at least 30 minutes per month (and
-                probably more when it comes to making those smart decisions!). So if you charge $25/hr or more, the Solo
-                plan will pay for itself. How about that?</p>
+            <p>{{ goal.description }}</p>
         </div>
         <div class="column">
             <h2>Currency</h2>
             <table>
-                <tr>
-                    <td><b>3¼p</b></td>
-                    <td>1 date with a lovely lady</td>
-                </tr>
-                <tr>
-                    <td><b>1p</b></td>
-                    <td>1 Facebook friend</td>
-                </tr>
+                {% for entry in goal.points.currency %}
+                    <tr>
+                        <td><b>{{ entry.points }}p</b></td>
+                        <td>{{ entry.name }}</td>
+                    </tr>
+                {% endfor %}
             </table>
         </div>
 
         <div class="clear"></div>
 
-        <div class="column">
+        <div class="column red">
             <h2>Progress</h2>
             <h3>in 365 days, started 20 days ago</h3>
             <div id="chart-1" class="chart"></div>
         </div>
         <div class="column">
             <h2>Reward</h2>
-            <center><img src="{{ url_for('static', filename='img/corei5.jpg') }}" style="max-width:300px;max-height:222px;" /></center>
+            <center><img src="{{ url_for('static', filename='img/'+goal.reward) }}" style="max-width:300px;max-height:222px;" /></center>
         </div>
     </div>
-    <div class="part">
+    <div class="part red">
         <div class="column wide">
             <table>
-                <tr>
+                <tr class="">
                     <td><b>3¼p</b></td>
                     <td>
                         1 date with a lovely lady

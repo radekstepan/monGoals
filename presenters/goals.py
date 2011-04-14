@@ -8,8 +8,7 @@ from flask.helpers import url_for
 
 from models.goals import Goals
 
-import time
-from datetime import date
+import datetime
 
 goals = Module(__name__)
 
@@ -20,18 +19,31 @@ def all():
 @goals.route('/new', methods=['GET', 'POST'])
 def new():
     if request.method == 'POST':
+        # meta
         goal = {'name': request.form['name'], 'description': request.form['description']}
 
-        goal['date'] = {'begin': date.today(), 'end': date(
-                int(request.form['due-date[year]']),
-                int(request.form['due-date[month]']),
-                int(request.form['due-date[day]']))}
+        # dates
+        now = datetime.datetime.now()
+        goal['date'] = {
+            'begin': {
+                'year': now.year,
+                'month': now.month,
+                'day': now.day
+            },
+            'end': {
+                'year': int(request.form['due-date[year]']),
+                'month': int(request.form['due-date[month]']),
+                'day': int(request.form['due-date[day]'])
+            }
+        }
 
+        goal['reward'] = request.form['file']
         goal['variant'] = request.form['variant']
 
+        # points system
         if goal['variant'] == 'points':
             points = {
-                'target': request.form['points[target]'],
+                'target': int(request.form['points[target]']),
                 'currency': [] }
 
             for n in range(10):
@@ -42,25 +54,27 @@ def new():
                     points['currency'].append(currency)
 
             goal['points'] = points
-            
+
+        # target value system
         else:
             goal['target'] = {
                 'current': request.form['target[current]'],
                 'end': request.form['target[end]'] }
 
-        print goal
+        # save
+        g = Goals()
+        id = g.save(goal)
 
-        return redirect(url_for('goals.goal'))
+        return redirect(url_for('goals.goal', id=id))
     else:
         fibonacci = [1,2,3,5,8,13,20]
         return render_template('new.html', **locals())
 
-@goals.route('/goal')
-def goal():
-    if (True):
-        return render_template('goal.html')
-    else:
-        return redirect(url_for('goals.detail'))
+@goals.route('/goal/<id>')
+def goal(id):
+    g = Goals()
+    goal = g.find_one(id)
+    return render_template('goal.html', goal=goal)
 
 @goals.route('/log')
 def log():

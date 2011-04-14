@@ -1,7 +1,7 @@
 body { color:#000; font-family:Helvetica, "Helvetica Neue", Arial, sans-serif; font-size:15px; line-height:28px;
     background:#FFF; margin:0px; padding:0px; }
 
-a { color:inherit; }
+a { color:inherit; text-decoration:underline; cursor:pointer; }
 
 .green { color:#8BB551; }
 .red { color:#BC4E3D; }
