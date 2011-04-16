@@ -7,7 +7,7 @@ from flask import render_template, request, redirect
 from flask.helpers import url_for
 
 from models.goals import Goals
-from models.time import *
+import utils
 
 goals = Module(__name__)
 
@@ -23,12 +23,11 @@ def new():
 
         # dates
         goal['date'] = {
-            'begin': str(timestamp_today()),
-            'end': {
-                'year': int(request.form['due-date[year]']),
-                'month': int(request.form['due-date[month]']),
-                'day': int(request.form['due-date[day]'])
-            }
+            'begin': utils.timestamp_new(),
+            'end': utils.timestamp_new(
+                    year = request.form['due-date[year]'],
+                    month = request.form['due-date[month]'],
+                    day = request.form['due-date[day]'])
         }
 
         goal['reward'] = request.form['file']

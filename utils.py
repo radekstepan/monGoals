@@ -4,9 +4,9 @@
 import datetime
 import time
 
-def timestamp(year=None, month=None, day=None):
+def timestamp_new(year=None, month=None, day=None):
     if year != None and month != None and day != None:
-        return int(time.mktime((datetime.datetime(year, month, day)).timetuple()))
+        return int(time.mktime((datetime.datetime(int(year), int(month), int(day))).timetuple()))
     else:
         return int(time.time())
 
