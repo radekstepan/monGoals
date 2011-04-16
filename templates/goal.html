@@ -33,7 +33,12 @@
                         {%- set progress = progress + entry.points.points -%}
                         {{ progress }}{% if not loop.last %},{% endif %}
                     {%- endfor %}]
+
+            {%- if (goal.points.target * (goal.points.logged / 100)) > ((meta.now - goal.date.begin) / (goal.date.end - goal.date.begin)) -%}
             r.g.linechart(0, 100, 300, 100, x, y, { shade:true, "colors":[greenColor] });
+            {%- else -%}
+            r.g.linechart(0, 100, 300, 100, x, y, { shade:true, "colors":[redColor] });
+            {%- endif -%}
         });
     </script>
 </head>

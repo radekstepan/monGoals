@@ -108,6 +108,7 @@ def __meta(log):
     # find out cutoff times for time-frames (x2 for % progress)
     now = utils.timestamp_new()
     meta = {
+        'now': now,
         'today': {
             'current': {
                 'cutoff': now - (60*60*24),
