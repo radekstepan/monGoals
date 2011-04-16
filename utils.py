@@ -14,4 +14,4 @@ def timestamp_ago(years=None, months=None, days=None):
     return int(time.mktime((datetime.datetime.now() + datetime.timedelta(years=years, months=months, days=days)).timetuple()))
 
 def timestamp_format(timestamp):
-    return (datetime.fromtimestamp(timestamp)).strftime('%d %b %Y')
+    return (datetime.date.fromtimestamp(timestamp)).strftime('%d %b %Y')

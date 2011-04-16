@@ -32,6 +32,7 @@ def new():
 
         goal['reward'] = request.form['file']
         goal['variant'] = request.form['variant']
+        goal['log'] = []
 
         # points system
         if goal['variant'] == 'points':
@@ -69,13 +70,27 @@ def goal(id):
     goal = g.find_one(id)
     return render_template('goal.html', goal=goal)
 
-@goals.route('/goal/<id>/log')
+@goals.route('/goal/<id>/log', methods=['GET', 'POST'])
 def log(id):
     g = Goals()
     goal = g.find_one(id)
     if goal:
         if request.method == 'POST':
-            pass
+            entry = {
+                'points': goal['points']['currency'][int(request.form['points'])],
+                'description': request.form['description'],
+                'date': utils.timestamp_new(
+                    year = request.form['date[year]'],
+                    month = request.form['date[month]'],
+                    day = request.form['date[day]'])
+            }
+            
+            log= goal['log']
+            log.append(entry)
+
+            g.update(id, 'log', log)
+
+            return redirect(url_for('goals.goal', id=id))
         else:
             return render_template('log.html', **locals())
     else:

@@ -17,3 +17,6 @@ class Goals:
 
     def save(self, dict):
         return self.table.insert(dict)
+
+    def update(self, id, what, dict):
+        self.table.update({'_id': ObjectId(id)}, {"$set": {what: dict}})

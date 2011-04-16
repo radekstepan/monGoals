@@ -4,6 +4,8 @@
 # framework
 from flask import Flask
 
+import utils
+
 def create_app(database, drop=False):
     # create our little application :)
     app = Flask(__name__)
@@ -26,9 +28,9 @@ def create_app(database, drop=False):
     app.register_module(goals)
 
     # template filters
-    @app.template_filter('fn')
-    def fn():
-        pass
+    @app.template_filter('timestamp_format')
+    def timestamp_format(timestamp):
+        return utils.timestamp_format(timestamp)
 
     return app
 

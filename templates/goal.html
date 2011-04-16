@@ -95,25 +95,20 @@
             <center><img src="{{ url_for('static', filename='img/'+goal.reward) }}" style="max-width:300px;max-height:222px;" /></center>
         </div>
     </div>
-    <div class="part red">
+    <div class="part">
         <div class="column wide">
+            <h2>Log</h2>
             <table>
-                <tr class="">
-                    <td><b>3¼p</b></td>
-                    <td>
-                        1 date with a lovely lady
-                        <p class="light">We estimate that Freckle will save, recover, and earn a single person at
-                            least 30 minutes per month (and probably more when it comes to making those smart
-                            decisions!). So if you charge $25/hr or more, the Solo plan will pay for itself. How
-                            about that?</p>
-                    </td>
-                    <td><span class="nobr">today</span></td>
-                </tr>
-                <tr class="last">
-                    <td><b>-1p</b></td>
-                    <td>1 Facebook friend</td>
-                    <td><span class="nobr">11 Mar</span></td>
-                </tr>
+                {% for entry in goal.log %}
+                    <tr class="{% if loop.last %}last{% endif %}">
+                        <td><b>{{ entry.points.points }}p</b></td>
+                        <td>
+                            {{ entry.points.name }}
+                            <p class="light">{{ entry.description }}</p>
+                        </td>
+                        <td><span class="nobr">{{ entry.date|timestamp_format }}</span></td>
+                    </tr>
+                {% endfor %}
             </table>
         </div>
     </div>
