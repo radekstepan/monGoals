@@ -46,18 +46,69 @@
 </header>
 
 <div id="meta">
-    <div class="red">
-        5p <span class="red">(-2.5%)</span>
+    {%- if meta.today.current.points > 0 %}
+    <div>
+        {{ meta.today.current.points }}p
+        {% if meta.today.previous.points > 0 %}
+            {%- set percent = (((meta.today.current.points * 100) / meta.today.previous.points) - 100)|round(1) -%}
+            {% if percent > 0 %}
+            <span class="green">(+{{ percent }}%)</span>
+            {%- else -%}
+                {% if percent < 0 -%}
+                <span class="red">({{ percent }}%)</span>
+                {% else -%}
+                <span></span>
+                {%- endif -%}
+            {%- endif -%}
+        {% else -%}
+            <span></span>
+        {% endif -%}
         <p>today</p>
     </div>
-    <div class="red">
-        27p <span class="green">(+5.7%)</span>
+    {% endif -%}
+
+    {%- if meta.seven.current.points > 0 %}
+    <div>
+        {{ meta.seven.current.points }}p
+        {% if meta.seven.previous.points > 0 %}
+            {%- set percent = (((meta.seven.current.points * 100) / meta.seven.previous.points) - 100)|round(1) -%}
+            {% if percent > 0 %}
+            <span class="green">(+{{ percent }}%)</span>
+            {%- else -%}
+                {% if percent < 0 -%}
+                <span class="red">({{ percent }}%)</span>
+                {% else -%}
+                <span></span>
+                {%- endif -%}
+            {%- endif -%}
+        {% else -%}
+            <span></span>
+        {% endif -%}
         <p>last 7 days</p>
     </div>
-    <div class="red">
-        193p <span class="green">(+255.7%)</span>
+    {% endif -%}
+
+    {%- if meta.thirty.current.points > 0 %}
+    <div>
+        {{ meta.thirty.current.points }}p
+        {% if meta.thirty.previous.points > 0 %}
+            {%- set percent = (((meta.thirty.current.points * 100) / meta.thirty.previous.points) - 100)|round(1) -%}
+            {% if percent > 0 %}
+            <span class="green">(+{{ percent }}%)</span>
+            {%- else -%}
+                {% if percent < 0 -%}
+                <span class="red">({{ percent }}%)</span>
+                {% else -%}
+                <span></span>
+                {%- endif -%}
+            {%- endif -%}
+        {% else -%}
+            <span></span>
+        {% endif -%}
         <p>last 30 days</p>
     </div>
+    {% endif -%}
+
     <div>
         {{ goal.points.target - goal.points.logged }}p <span></span>
         <p>remaining</p>
