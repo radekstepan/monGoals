@@ -7,8 +7,7 @@ from flask import render_template, request, redirect
 from flask.helpers import url_for
 
 from models.goals import Goals
-
-import datetime
+from models.time import *
 
 goals = Module(__name__)
 
@@ -23,13 +22,8 @@ def new():
         goal = {'name': request.form['name'], 'description': request.form['description']}
 
         # dates
-        now = datetime.datetime.now()
         goal['date'] = {
-            'begin': {
-                'year': now.year,
-                'month': now.month,
-                'day': now.day
-            },
+            'begin': str(timestamp_today()),
             'end': {
                 'year': int(request.form['due-date[year]']),
                 'month': int(request.form['due-date[month]']),
