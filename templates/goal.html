@@ -27,14 +27,14 @@
             var r = Raphael("chart-1");
             var x = [{% for number in range(goal.log|length) -%}
                         {{ number+1 }}{% if not loop.last %},{% endif %}
-                    {%- endfor %}]
-            {% set progress = 0 %}
+                    {%- endfor %}];
+            {% set progress = 0 -%}
             var y = [{% for entry in goal.log -%}
                         {%- set progress = progress + entry.points.points -%}
                         {{ progress }}{% if not loop.last %},{% endif %}
-                    {%- endfor %}]
+                    {%- endfor %}];
 
-            {%- if (goal.points.target * (goal.points.logged / 100)) > ((meta.now - goal.date.begin) / (goal.date.end - goal.date.begin)) -%}
+            {% if (goal.points.target * (goal.points.logged / 100)) > ((meta.now - goal.date.begin) / (goal.date.end - goal.date.begin)) -%}
             r.g.linechart(0, 100, 300, 100, x, y, { shade:true, "colors":[greenColor] });
             {%- else -%}
             r.g.linechart(0, 100, 300, 100, x, y, { shade:true, "colors":[redColor] });
