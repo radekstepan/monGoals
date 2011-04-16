@@ -35,7 +35,7 @@
 <body>
 
 <header>
-    <a href="{{ url_for('goals.log') }}">Log progress &rarr;</a>
+    <a href="{{ url_for('goals.log', id=goal._id) }}">Log progress &rarr;</a>
     <a href="{{ url_for('goals.all') }}">&larr; Back to all goals</a>
     Achieve greater inner balance
 </header>

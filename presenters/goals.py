@@ -69,6 +69,14 @@ def goal(id):
     goal = g.find_one(id)
     return render_template('goal.html', goal=goal)
 
-@goals.route('/log')
-def log():
-    return render_template('log.html', elmo="elmo")
+@goals.route('/goal/<id>/log')
+def log(id):
+    g = Goals()
+    goal = g.find_one(id)
+    if goal:
+        if request.method == 'POST':
+            pass
+        else:
+            return render_template('log.html', **locals())
+    else:
+        return redirect(url_for('goals.all'))

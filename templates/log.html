@@ -16,18 +16,20 @@
 <body>
 
 <header>
-    <a href="{{ url_for('goals.goal') }}">&larr; Back to the goal</a>
+    <a href="{{ url_for('goals.goal', id=goal._id) }}">&larr; Back to the goal</a>
     Log progress
 </header>
 
 <article>
-    <form action="{{ url_for('goals.log') }}" method=post>
+    <form action="{{ url_for('goals.log', id=goal._id) }}" method=post>
         <div class="part">
             <div class="column">
                 <div>
                     <label>Points</label>
                     <select name="points">
-                        <option>1p Something great here</option>
+                        {% for entry in goal.points.currency %}
+                            <option value="{{ loop.index -1 }}">{{ entry.points }}p {{ entry.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div>
@@ -36,7 +38,21 @@
                 </div>
                 <div>
                     <label>Date</label>
-                    <input type="text" name="date">
+                    <select name="date[day]">
+                        {% for day in range(1, 32) %}
+                            <option value="{{ day }}">{{ day }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="date[month]">
+                        {% for month in range(1, 13) %}
+                            <option value="{{ month }}">{{ month }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="date[year]">
+                        {% for year in range(2011, 2100) %}
+                            <option value="{{ year }}">{{ year }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <input type="submit" value="Save">
             </div>
