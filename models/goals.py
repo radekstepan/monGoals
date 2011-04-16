@@ -20,3 +20,6 @@ class Goals:
 
     def update(self, id, what, dict):
         self.table.update({'_id': ObjectId(id)}, {"$set": {what: dict}})
+
+    def increment(self, id, what, value):
+        self.table.update({'_id': ObjectId(id)}, {"$inc": {what: int(value)}})

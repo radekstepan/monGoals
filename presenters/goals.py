@@ -38,6 +38,7 @@ def new():
         if goal['variant'] == 'points':
             points = {
                 'target': int(request.form['points[target]']),
+                'logged': 0,
                 'currency': [] }
 
             for n in range(10):
@@ -85,10 +86,11 @@ def log(id):
                     day = request.form['date[day]'])
             }
             
-            log= goal['log']
+            log = goal['log']
             log.append(entry)
 
             g.update(id, 'log', log)
+            g.increment(id, 'points.logged', entry['points']['points'])
 
             return redirect(url_for('goals.goal', id=id))
         else:

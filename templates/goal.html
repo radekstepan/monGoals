@@ -25,9 +25,14 @@
             var redColor = jQuery('<div></div>').hide().addClass("red").css('color');
 
             var r = Raphael("chart-1");
-            var x = [{% for number in range(goal.log|length) %}{{ number+1 }}{% if not loop.last %},{% endif %}{% endfor %}]
+            var x = [{% for number in range(goal.log|length) -%}
+                        {{ number+1 }}{% if not loop.last %},{% endif %}
+                    {%- endfor %}]
             {% set progress = 0 %}
-            var y = [{% for entry in goal.log %}{% set progress = progress + entry.points.points %}{{ progress }}{% if not loop.last %},{% endif %}{% endfor %}]
+            var y = [{% for entry in goal.log -%}
+                        {%- set progress = progress + entry.points.points -%}
+                        {{ progress }}{% if not loop.last %},{% endif %}
+                    {%- endfor %}]
             r.g.linechart(0, 100, 300, 100, x, y, { shade:true, "colors":[greenColor] });
         });
     </script>
@@ -53,8 +58,8 @@
         193p <span class="green">(+255.7%)</span>
         <p>last 30 days</p>
     </div>
-    <div class="red">
-        25p <span></span>
+    <div>
+        {{ goal.points.target - goal.points.logged }}p <span></span>
         <p>remaining</p>
     </div>
     <div>
@@ -99,7 +104,7 @@
         <div class="column wide">
             <h2>Log</h2>
             <table>
-                {% for entry in goal.log %}
+                {% for entry in goal.log|reverse %}
                     <tr class="{% if loop.last %}last{% endif %}">
                         <td><b>{{ entry.points.points }}p</b></td>
                         <td>
