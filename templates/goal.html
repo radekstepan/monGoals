@@ -3,9 +3,9 @@
 <head>
 	<meta charset="utf-8" />
 
-	<title>monGoals</title>
+	<title>mongoals</title>
 
-	<meta name="description" content="monGoals" />
+	<meta name="description" content="mongoals" />
 	<meta name="author" content="Radek Stepan" />
 
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
@@ -29,7 +29,7 @@
                         {{ number+1 }}{% if not loop.last %},{% endif %}
                     {%- endfor %}];
             {% set progress = 0 -%}
-            var y = [{% for entry in goal.log -%}
+            var y = [{% for entry in goal.log|sort_log -%}
                         {%- set progress = progress + entry.points.points -%}
                         {{ progress }}{% if not loop.last %},{% endif %}
                     {%- endfor %}];
@@ -47,7 +47,7 @@
 <header>
     <a href="{{ url_for('goals.log', id=goal._id) }}">Log progress &rarr;</a>
     <a href="{{ url_for('goals.all') }}">&larr; Back to all goals</a>
-    Achieve greater inner balance
+    {{ goal.name }}
 </header>
 
 <div id="meta">
