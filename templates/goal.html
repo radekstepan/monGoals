@@ -31,13 +31,13 @@
             {% set progress = 0 -%}
             var y = [{% for entry in goal.log|sort_log -%}
                         {%- set progress = progress + entry.points.points -%}
-                        {{ progress }}{% if not loop.last %},{% endif %}
+                        {{ (progress * 100) / goal.points.target }}{% if not loop.last %},{% endif %}
                     {%- endfor %}];
 
             {% if (goal.points.target * (goal.points.logged / 100)) > ((meta.now - goal.date.begin) / (goal.date.end - goal.date.begin)) -%}
-            r.g.linechart(0, 100, 300, 100, x, y, { shade:true, "colors":[greenColor] });
+            r.g.linechart(0, 0, 300, 200, x, [y, 100], { shade:true, "colors":[greenColor] });
             {%- else -%}
-            r.g.linechart(0, 100, 300, 100, x, y, { shade:true, "colors":[redColor] });
+            r.g.linechart(0, 0, 300, 200, x, [y, 100], { shade:true, "colors":[redColor] });
             {%- endif -%}
         });
     </script>
