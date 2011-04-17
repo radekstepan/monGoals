@@ -7,19 +7,24 @@ from flask import render_template, request, redirect
 from flask.helpers import url_for
 
 from models.goals import Goals
+from models.meta import Meta
+
 import utils
+from copy import deepcopy
 
 goals = Module(__name__)
 
 @goals.route('/')
 def all():
     '''list all goals'''
-    g = Goals()
-    goals = g.find_all()
+    g, m = Goals(), Meta()
 
-    meta = {'now': utils.timestamp_new()}
+    goals = g.to_list(g.find_all())
+    for goal in goals:
+        m.from_log(goal['log'])
+    meta = m.meta
 
-    return render_template('main.html', **locals())
+    return render_template('main.html', goals=goals, meta=meta)
 
 @goals.route('/new', methods=['GET', 'POST'])
 def new():
@@ -75,9 +80,11 @@ def new():
 @goals.route('/goal/<id>')
 def goal(id):
     '''goal detail'''
-    g = Goals()
+    g, m = Goals(), Meta()
+
     goal = g.find_one(id)
-    meta = __meta(goal['log'])
+    meta = m.from_log(goal['log'])
+
     return render_template('goal.html', **locals())
 
 @goals.route('/goal/<id>/log', methods=['GET', 'POST'])
@@ -107,68 +114,3 @@ def log(id):
             return render_template('log.html', **locals())
     else:
         return redirect(url_for('goals.all'))
-
-def __meta(log):
-    '''calculate the progress past today, 7 days, 30 days'''
-    # find out cutoff times for time-frames (x2 for % progress)
-    now = utils.timestamp_new()
-    meta = {
-        'now': now,
-        'today': {
-            'current': {
-                'cutoff': now - (60*60*24),
-                'points': 0
-            },
-            'previous': {
-                'cutoff': now - (60*60*24*2),
-                'points': 0
-            },
-        },
-        'seven': {
-            'current': {
-                'cutoff': now - (60*60*24*7),
-                'points': 0
-            },
-            'previous': {
-                'cutoff': now - (60*60*24*7*2),
-                'points': 0
-            },
-        },
-        'thirty': {
-            'current': {
-                'cutoff': now - (60*60*24*30),
-                'points': 0
-            },
-            'previous': {
-                'cutoff': now - (60*60*24*30*2),
-                'points': 0
-            },
-        },
-    }
-
-    # traverse all log entries...
-    for entry in log:
-        p = entry['points']['points']
-        if entry['date'] > meta['today']['current']['cutoff']:
-            meta['today']['current']['points'] += p
-            meta['seven']['current']['points'] += p
-            meta['thirty']['current']['points'] += p
-        else:
-            if entry['date'] > meta['today']['previous']['cutoff']:
-                meta['today']['previous']['points'] += p
-                meta['seven']['current']['points'] += p
-                meta['thirty']['current']['points'] += p
-            else:
-                if entry['date'] > meta['seven']['current']['cutoff']:
-                    meta['seven']['current']['points'] += p
-                    meta['thirty']['current']['points'] += p
-                else:
-                    if entry['date'] > meta['seven']['previous']['cutoff']:
-                        meta['seven']['previous']['points'] += p
-                        meta['thirty']['current']['points'] += p
-                    else:
-                        if entry['date'] > meta['thirty']['current']['cutoff']:
-                            meta['thirty']['current']['points'] += p
-                        elif entry['date'] > meta['thirty']['previous']['cutoff']:
-                            meta['thirty']['previous']['points'] += p
-    return meta

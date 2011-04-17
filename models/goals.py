@@ -23,3 +23,9 @@ class Goals:
 
     def increment(self, id, what, value):
         self.table.update({'_id': ObjectId(id)}, {"$inc": {what: int(value)}})
+
+    def to_list(self, object):
+        list = []
+        for entry in object:
+            list.append(entry)
+        return list
