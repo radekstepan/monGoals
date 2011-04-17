@@ -8,23 +8,25 @@ from flask.helpers import url_for
 
 from models.goals import Goals
 from models.meta import Meta
+from models.progress import Progress
 
 import utils
-from copy import deepcopy
 
 goals = Module(__name__)
 
 @goals.route('/')
 def all():
     '''list all goals'''
-    g, m = Goals(), Meta()
+    g, m, p = Goals(), Meta(), Progress()
 
     goals = g.to_list(g.find_all())
     for goal in goals:
         m.from_log(goal['log'])
+        p.add_log(goal['log'])
     meta = m.meta
+    progress_all = p.sort_log()
 
-    return render_template('main.html', goals=goals, meta=meta)
+    return render_template('main.html', goals=goals, meta=meta, progress_all=progress_all)
 
 @goals.route('/new', methods=['GET', 'POST'])
 def new():

@@ -48,6 +48,12 @@ def create_app(database, drop=False):
         else:
             return 'today'
 
+    @app.template_filter('sort_log')
+    def sort_log(log):
+        from models.progress import Progress
+        p = Progress()
+        return p.sort_log(log)
+
     return app
 
 if __name__ == '__main__':

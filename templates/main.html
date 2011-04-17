@@ -25,9 +25,16 @@
         var blueColor = jQuery('<div></div>').hide().addClass("blue").css('color');
 
         jQuery(document).ready(function() {
-            var r = Raphael("chart-3");
-            var x = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35]
-            var y = [10,60,30,7,0,5,10,0,0,0,0,0,20,20,30,70,90,0,20,20,30,7,0,5,10,20,30,0,0,20,20,30,180]
+            var r = Raphael("chart-all");
+            var x = [{% for number in range(progress_all|length) -%}
+            {{ number+1 }}{% if not loop.last %},{% endif %}
+            {%- endfor %}];
+            {% set progress = 0 -%}
+            var y = [{% for entry in progress_all -%}
+            {%- set progress = progress + entry.points.points -%}
+            {{ progress }}{% if not loop.last %},{% endif %}
+            {%- endfor %}];
+
             r.g.linechart(0, 0, 500, 60, x, y, { shade:true, "colors":[blueColor] });
         });
     </script>
@@ -104,7 +111,7 @@
     {% endif -%}
 
     <div>
-        <div id="chart-3" class="chart"></div>
+        <div id="chart-all" class="chart"></div>
     </div>
 </div>
 

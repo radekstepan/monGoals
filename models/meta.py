@@ -66,5 +66,5 @@ class Meta:
                     'cutoff': now - (60*60*24*30*2),
                     'points': 0
                 },
-            },
+            }
         }
