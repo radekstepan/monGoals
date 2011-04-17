@@ -14,7 +14,12 @@ goals = Module(__name__)
 @goals.route('/')
 def all():
     '''list all goals'''
-    return render_template('main.html', elmo="elmo")
+    g = Goals()
+    goals = g.find_all()
+
+    meta = {'now': utils.timestamp_new()}
+
+    return render_template('main.html', **locals())
 
 @goals.route('/new', methods=['GET', 'POST'])
 def new():

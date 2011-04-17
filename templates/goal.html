@@ -19,12 +19,12 @@
     <script src="{{ url_for('static', filename='js/jquery-1.5.2.min.js') }}" type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript" charset="utf-8">
-        jQuery(document).ready(function() {
-            // 'fetch' colors from css
-            var greenColor = jQuery('<div></div>').hide().addClass("green").css('color');
-            var redColor = jQuery('<div></div>').hide().addClass("red").css('color');
+        // 'fetch' colors from css
+        var greenColor = jQuery('<div></div>').hide().addClass("green").css('color');
+        var redColor = jQuery('<div></div>').hide().addClass("red").css('color');
 
-            var r = Raphael("chart-1");
+        jQuery(document).ready(function() {
+            var r = Raphael("chart");
             var x = [{% for number in range(goal.log|length) -%}
                         {{ number+1 }}{% if not loop.last %},{% endif %}
                     {%- endfor %}];
@@ -149,7 +149,7 @@
         <div class="column">
             <h2>Progress</h2>
             <h3>{{ goal.date.end|timestamp_distance }}, started {{ goal.date.begin|timestamp_distance }}</h3>
-            <div id="chart-1" class="chart"></div>
+            <div id="chart" class="chart"></div>
         </div>
         <div class="column">
             <h2>Reward</h2>
