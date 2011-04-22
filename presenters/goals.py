@@ -132,19 +132,24 @@ def log(id):
             # fetch the log
             log = goal['log']
             if goal['variant'] == 'value':
-                if not log: # difference from the beginning
-                    points = (float(request.form['value']) - goal['values']['begin']) / goal['points']['conversion']
-                else: # difference from last log
-                    points = (float(request.form['value']) - log[-1]['value']) / goal['points']['conversion']
-                entry = {
-                    'value': round(float(request.form['value']), 1),
-                    'points': round(points, 1),
-                    'description': request.form['description'],
-                    'date': utils.timestamp_new(
-                        year = request.form['date[year]'],
-                        month = request.form['date[month]'],
-                        day = request.form['date[day]'])
-                }
+                # validate
+                error = []
+                if 'value' not in request.form or not request.form['value']: error.append('New value is missing')
+
+                if not error:
+                    if not log: # difference from the beginning
+                        points = (float(request.form['value']) - goal['values']['begin']) / goal['points']['conversion']
+                    else: # difference from last log
+                        points = (float(request.form['value']) - log[-1]['value']) / goal['points']['conversion']
+                    entry = {
+                        'value': round(float(request.form['value']), 1),
+                        'points': round(points, 1),
+                        'description': request.form['description'],
+                        'date': utils.timestamp_new(
+                            year = request.form['date[year]'],
+                            month = request.form['date[month]'],
+                            day = request.form['date[day]'])
+                    }
             else:
                 entry = {
                     'points': goal['points']['currency'][int(request.form['points'])]['points'],
@@ -156,24 +161,25 @@ def log(id):
                         day = request.form['date[day]'])
                 }
 
-            # append to the log
-            log.append(entry)
+            if not error:
+                # append to the log
+                log.append(entry)
 
-            # sort (yeah, not smart when already sorted)
-            log = utils.sort_list(log)
+                # sort (yeah, not smart when already sorted)
+                log = utils.sort_list(log)
 
-            # update current value on the last entry (by date, not actual entry)
-            if goal['variant'] == 'value':
-                g.update(id, 'values.current', log[-1]['value'])
+                # update current value on the last entry (by date, not actual entry)
+                if goal['variant'] == 'value':
+                    g.update(id, 'values.current', log[-1]['value'])
 
-            # update the entry
-            g.update(id, 'log', log)
-            # increment running total of logged points
-            g.increment(id, 'points.logged', entry['points'])
+                # update the entry
+                g.update(id, 'log', log)
+                # increment running total of logged points
+                g.increment(id, 'points.logged', entry['points'])
 
-            return redirect(url_for('goals.goal', id=id))
-        else:
-            date = utils.date_list(utils.timestamp_new())
-            return render_template(goal['variant']+'-log.html', **locals())
+                return redirect(url_for('goals.goal', id=id))
+
+        date = utils.date_list(utils.timestamp_new())
+        return render_template(goal['variant']+'-log.html', **locals())
     else:
         return redirect(url_for('goals.all'))

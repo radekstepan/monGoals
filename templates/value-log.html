@@ -21,6 +21,14 @@
 </header>
 
 <article>
+    {% if error %}
+    <ul class="error">
+    {% for e in error %}
+        <li>{{ e }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
     <form action="{{ url_for('goals.log', id=goal._id) }}" method=post>
         <div class="part">
             <div class="column">
