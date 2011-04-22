@@ -44,7 +44,7 @@ def new():
                     day = request.form['due-date[day]'])
         }
 
-        goal['reward'] = request.form['file']
+        goal['reward'] = utils.file_to_mongo(request.files['file'])
         goal['variant'] = request.form['variant']
         goal['log'] = []
 

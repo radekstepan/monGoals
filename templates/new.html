@@ -40,7 +40,7 @@
 </header>
 
 <article>
-    <form action="{{ url_for('goals.new') }}" method=post>
+    <form action="{{ url_for('goals.new') }}" enctype=multipart/form-data method=post>
         <div class="part">
             <div class="column">
                 <h2>About goal</h2>
@@ -71,8 +71,8 @@
                     </select>
                 </div>
                 <div>
-                    <label>Reward file name</label>
-                    <input type="text" name="file">
+                    <label>Reward image file</label>
+                    <input type="file" name="file">
                 </div>
                 <input type="submit" value="Save">
             </div>

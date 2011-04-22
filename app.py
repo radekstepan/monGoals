@@ -53,4 +53,4 @@ def create_app(database, drop=False):
 
 if __name__ == '__main__':
     app = create_app(database='mongoals')
-    app.run(port=5003)
+    app.run(port=5002)

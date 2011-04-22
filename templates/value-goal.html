@@ -159,7 +159,7 @@
         </div>
         <div class="column">
             <h2>Reward</h2>
-            <center><img src="{{ url_for('static', filename='img/'+goal.reward) }}" style="max-width:300px;max-height:222px;" /></center>
+            <center><img src="data:image/jpeg;base64,{{ goal.reward }}" style="max-width:300px;max-height:222px;" /></center>
         </div>
     </div>
     <div class="part">
