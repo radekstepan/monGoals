@@ -22,6 +22,7 @@ div.part { width:648px; float:left; }
 
 div.column { float:left; padding:2px 12px; width:300px; margin-bottom:20px; }
     div.column div.chart { width:300px; height:200px; }
+        div.column div.chart p { width:100%; text-align:center; padding-top:30%; }
     div.column h2 { font-size:18px; font-weight:bold; line-height:20px; }
     div.column h3 { font-size:15px; color:#919191; text-transform:uppercase; font-weight:bold; }
     div.column p { line-height:24px; }

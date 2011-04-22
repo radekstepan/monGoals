@@ -40,7 +40,7 @@
 
             r.g.linechart(0, 0, 500, 60, x, y, { shade:true, "colors":[blueColor] });
         });
-        {%- endif -%}
+        {% endif -%}
     </script>
 </head>
 <body>
@@ -127,20 +127,24 @@
         </div>
     </a>
     <script type="text/javascript" charset="utf-8">
-        var r = Raphael("chart-{{ loop.index }}");
-        var x = [{% for number in range(goal.log|length) -%}
-        {{ number+1 }}{% if not loop.last %},{% endif %}
-        {%- endfor %}];
-        {% set progress = 0 -%}
-        var y = [{% for entry in goal.log|sort_log -%}
-        {%- set progress = progress + entry.points -%}
-        {{ (progress * 100) / goal.points.target }}{% if not loop.last %},{% endif %}
-        {%- endfor %}];
+        {% if goal.log|length > 1 -%}
+            var r = Raphael("chart-{{ loop.index }}");
+            var x = [{% for number in range(goal.log|length) -%}
+            {{ number+1 }}{% if not loop.last %},{% endif %}
+            {%- endfor %}];
+            {% set progress = 0 -%}
+            var y = [{% for entry in goal.log|sort_log -%}
+            {%- set progress = progress + entry.points -%}
+            {{ (progress * 100) / goal.points.target }}{% if not loop.last %},{% endif %}
+            {%- endfor %}];
 
-        {% if (goal.points.target * (goal.points.logged / 100)) > ((meta.now - goal.date.begin) / (goal.date.end - goal.date.begin)) -%}
-        r.g.linechart(0, 000, 300, 200, x, [y, 100], { shade:true, "colors":[greenColor] });
+            {% if (goal.points.target * (goal.points.logged / 100)) > ((meta.now - goal.date.begin) / (goal.date.end - goal.date.begin)) -%}
+            r.g.linechart(0, 000, 300, 200, x, [y, 100], { shade:true, "colors":[greenColor] });
+            {%- else -%}
+            r.g.linechart(0, 000, 300, 200, x, [y, 100], { shade:true, "colors":[redColor] });
+            {%- endif %}
         {%- else -%}
-        r.g.linechart(0, 000, 300, 200, x, [y, 100], { shade:true, "colors":[redColor] });
+            jQuery("#chart-{{ loop.index }}").append('<p>Your progress will show here soon</p>');
         {%- endif %}
     </script>
     {% endfor %}

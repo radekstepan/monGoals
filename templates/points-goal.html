@@ -24,21 +24,25 @@
         var redColor = jQuery('<div></div>').hide().addClass("red").css('color');
 
         jQuery(document).ready(function() {
-            var r = Raphael("chart");
-            var x = [{% for number in range(goal.log|length) -%}
-                        {{ number+1 }}{% if not loop.last %},{% endif %}
-                    {%- endfor %}];
-            {% set progress = 0 -%}
-            var y = [{% for entry in goal.log|sort_log -%}
-                        {%- set progress = progress + entry.points -%}
-                        {{ (progress * 100) / goal.points.target }}{% if not loop.last %},{% endif %}
-                    {%- endfor %}];
+            {% if goal.log|length > 1 -%}
+                var r = Raphael("chart");
+                var x = [{% for number in range(goal.log|length) -%}
+                            {{ number+1 }}{% if not loop.last %},{% endif %}
+                        {%- endfor %}];
+                {% set progress = 0 -%}
+                var y = [{% for entry in goal.log|sort_log -%}
+                            {%- set progress = progress + entry.points -%}
+                            {{ (progress * 100) / goal.points.target }}{% if not loop.last %},{% endif %}
+                        {%- endfor %}];
 
-            {% if (goal.points.target * (goal.points.logged / 100)) > ((meta.now - goal.date.begin) / (goal.date.end - goal.date.begin)) -%}
-            r.g.linechart(0, 0, 300, 200, x, [y, 100], { shade:true, "colors":[greenColor] });
+                {% if (goal.points.target * (goal.points.logged / 100)) > ((meta.now - goal.date.begin) / (goal.date.end - goal.date.begin)) -%}
+                r.g.linechart(0, 0, 300, 200, x, [y, 100], { shade:true, "colors":[greenColor] });
+                {%- else -%}
+                r.g.linechart(0, 0, 300, 200, x, [y, 100], { shade:true, "colors":[redColor] });
+                {%- endif -%}
             {%- else -%}
-            r.g.linechart(0, 0, 300, 200, x, [y, 100], { shade:true, "colors":[redColor] });
-            {%- endif -%}
+                jQuery("#chart").append('<p>Your progress will show here soon</p>');
+            {%- endif %}
         });
     </script>
 </head>
@@ -120,7 +124,7 @@
     </div>
     <div>
         {{ goal.points.target }}p <span></span>
-        <p>total</p>
+        <p>target</p>
     </div>
 </div>
 

@@ -24,21 +24,25 @@
         var redColor = jQuery('<div></div>').hide().addClass("red").css('color');
 
         jQuery(document).ready(function() {
-            var r = Raphael("chart");
-            var x = [{% for number in range(goal.log|length) -%}
-                        {{ number+1 }}{% if not loop.last %},{% endif %}
-                    {%- endfor %}];
-            {% set progress = 0 -%}
-            var y = [{% for entry in goal.log|sort_log -%}
-                        {%- set progress = progress + entry.points -%}
-                        {{ (progress * 100) / goal.points.target }}{% if not loop.last %},{% endif %}
-                    {%- endfor %}];
+            {% if goal.log|length > 1 -%}
+                var r = Raphael("chart");
+                var x = [{% for number in range(goal.log|length) -%}
+                            {{ number+1 }}{% if not loop.last %},{% endif %}
+                        {%- endfor %}];
+                {% set progress = 0 -%}
+                var y = [{% for entry in goal.log|sort_log -%}
+                            {%- set progress = progress + entry.points -%}
+                            {{ (progress * 100) / goal.points.target }}{% if not loop.last %},{% endif %}
+                        {%- endfor %}];
 
-            {% if (goal.points.target * (goal.points.logged / 100)) > ((meta.now - goal.date.begin) / (goal.date.end - goal.date.begin)) -%}
-            r.g.linechart(0, 0, 300, 200, x, [y, 100], { shade:true, "colors":[greenColor] });
+                {% if (goal.points.target * (goal.points.logged / 100)) > ((meta.now - goal.date.begin) / (goal.date.end - goal.date.begin)) -%}
+                r.g.linechart(0, 0, 300, 200, x, [y, 100], { shade:true, "colors":[greenColor] });
+                {%- else -%}
+                r.g.linechart(0, 0, 300, 200, x, [y, 100], { shade:true, "colors":[redColor] });
+                {%- endif -%}
             {%- else -%}
-            r.g.linechart(0, 0, 300, 200, x, [y, 100], { shade:true, "colors":[redColor] });
-            {%- endif -%}
+                jQuery("#chart").append('<p>Your progress will show here soon</p>');
+            {%- endif %}
         });
     </script>
 </head>
@@ -115,15 +119,15 @@
     {% endif -%}
 
     <div>
-        {{ goal['values'].begin }}{{ goal.points.unit }} <span></span>
+        {{ goal['values'].begin }} {{ goal.points.unit }} <span></span>
         <p>beginning</p>
     </div>
     <div>
-        {{ goal['values'].current }}{{ goal.points.unit }} <span></span>
+        {{ goal['values'].current }} {{ goal.points.unit }} <span></span>
         <p>current</p>
     </div>
     <div>
-        {{ goal['values'].end }}{{ goal.points.unit }} <span></span>
+        {{ goal['values'].end }} {{ goal.points.unit }} <span></span>
         <p>target</p>
     </div>
 </div>
@@ -141,7 +145,7 @@
             <table>
                 <tr>
                     <td><b>1p</b></td>
-                    <td>for each {{ goal.points.conversion }}{{ goal.points.unit }} logged</td>
+                    <td>for each {{ goal.points.conversion }} {{ goal.points.unit }} logged</td>
                 </tr>
             </table>
         </div>
@@ -166,7 +170,7 @@
                     <tr class="{% if loop.last %}last{% endif %}">
                         <td><b>{{ entry.points }}p</b></td>
                         <td>
-                            {{ entry.points.name }}
+                            {{ entry.value }} {{ goal.points.unit }}
                             <p class="light">{{ entry.description }}</p>
                         </td>
                         <td><span class="nobr">{{ entry.date|timestamp_format }}</span></td>
