@@ -40,6 +40,14 @@
 </header>
 
 <article>
+    {% if error %}
+    <ul class="error">
+    {% for e in error %}
+        <li>{{ e }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
     <form action="{{ url_for('goals.new') }}" enctype=multipart/form-data method=post>
         <div class="part">
             <div class="column">
@@ -122,6 +130,7 @@
                     </div>
                 </div>
             </div>
+            {% if goals %}
             <div class="column">
                 <h2>Current goals</h2>
                 <table>
@@ -133,6 +142,7 @@
                     {% endfor %}
                 </table>
             </div>
+            {% endif %}
         </div>
     </form>
 </article>

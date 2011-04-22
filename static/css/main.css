@@ -16,6 +16,8 @@ header { background:#000; font-size:15px; font-weight:bold; color:#FFF; padding:
         #meta div p { color:#919191; text-transform:uppercase; font-size:18px; }
         #meta div.chart { display:inline; width:500px; height:60px; }
 
+ul.error { margin:0 0 10px 12px; font-weight:bold; color:#BC4E3D; }
+
 article { margin-top:20px; }
 
 div.part { float:left; }
