@@ -9,6 +9,7 @@ import utils
 def create_app(database, drop=False):
     # create our little application :)
     app = Flask(__name__)
+    app.debug = True
     app.config.from_object(__name__)
     app.secret_key = 'DtJe0TW8ZQqLWT7UVE7alBN6vxxI6xBCDjVbcgY3'
 

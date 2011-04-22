@@ -143,6 +143,7 @@ def log(id):
 
             return redirect(url_for('goals.goal', id=id))
         else:
+            date = utils.date_list(utils.timestamp_new())
             return render_template(goal['variant']+'-log.html', **locals())
     else:
         return redirect(url_for('goals.all'))
