@@ -84,6 +84,8 @@ def new():
 
         return redirect(url_for('goals.goal', id=id))
     else:
+        g = Goals()
+        goals = utils.sort_list_by_points(g.to_list(g.find_all()))
         fibonacci = [1,2,3,5,8,13,20]
         return render_template('new.html', **locals())
 

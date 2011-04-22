@@ -31,6 +31,9 @@ def date_list(timestamp):
 def sort_list(list):
     return sorted(list, key=lambda k: k['date'])
 
+def sort_list_by_points(list):
+    return sorted(list, key=lambda k: k['points']['target'], reverse=True)
+
 def file_to_mongo(file):
     # upload
     path = os.path.join('static/temp', secure_filename(file.filename))
