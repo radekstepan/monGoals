@@ -19,3 +19,6 @@ def timestamp_format(timestamp):
 
 def date_list(timestamp):
     return [int(x) for x in shlex.split((datetime.date.fromtimestamp(timestamp)).strftime('%d %m %Y').replace(' 0', ' '))]
+
+def sort_list(list):
+    return sorted(list, key=lambda k: k['date'])

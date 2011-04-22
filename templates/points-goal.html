@@ -30,7 +30,7 @@
                             {{ number+1 }}{% if not loop.last %},{% endif %}
                         {%- endfor %}];
                 {% set progress = 0 -%}
-                var y = [{% for entry in goal.log|sort_log -%}
+                var y = [{% for entry in goal.log -%}
                             {%- set progress = progress + entry.points -%}
                             {{ (progress * 100) / goal.points.target }}{% if not loop.last %},{% endif %}
                         {%- endfor %}];

@@ -120,8 +120,6 @@ def log(id):
                         month = request.form['date[month]'],
                         day = request.form['date[day]'])
                 }
-                # increment current value
-                g.update(id, 'values.current', round(float(request.form['value']), 1))
             else:
                 entry = {
                     'points': goal['points']['currency'][int(request.form['points'])]['points'],
@@ -135,6 +133,13 @@ def log(id):
 
             # append to the log
             log.append(entry)
+
+            # sort (yeah, not smart when already sorted)
+            log = utils.sort_list(log)
+
+            # update current value on the last entry (by date, not actual entry)
+            if goal['variant'] == 'value':
+                g.update(id, 'values.current', log[-1]['value'])
 
             # update the entry
             g.update(id, 'log', log)
