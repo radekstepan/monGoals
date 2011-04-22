@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+
+	<title>mongoals</title>
+
+	<meta name="description" content="mongoals" />
+	<meta name="author" content="Radek Stepan" />
+
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+
+<header>
+    <a href="{{ url_for('goals.goal', id=goal._id) }}">&larr; Back to the goal</a>
+    Log progress
+</header>
+
+<article>
+    <form action="{{ url_for('goals.log', id=goal._id) }}" method=post>
+        <div class="part">
+            <div class="column">
+                <div>
+                    <label>New value (in {{ goal.points.unit }})</label>
+                    <input type="text" name="value">
+                </div>
+                <div>
+                    <label>Description</label>
+                    <textarea name="description"></textarea>
+                </div>
+                <div>
+                    <label>Date</label>
+                    <select name="date[day]">
+                        {% for day in range(1, 32) %}
+                            <option value="{{ day }}">{{ day }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="date[month]">
+                        {% for month in range(1, 13) %}
+                            <option value="{{ month }}">{{ month }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="date[year]">
+                        {% for year in range(2011, 2100) %}
+                            <option value="{{ year }}">{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <input type="submit" value="Save">
+            </div>
+        </div>
+    </form>
+</article>
+
+</body>
+</html>

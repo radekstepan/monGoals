@@ -8,7 +8,7 @@ class Meta:
     def from_log(self, log):
         '''calculate the progress past today, 7 days, 30 days'''
         for entry in log:
-            p = entry['points']['points']
+            p = entry['points']
             if entry['date'] > self.meta['today']['current']['cutoff']:
                 self.meta['today']['current']['points'] += p
                 self.meta['seven']['current']['points'] += p

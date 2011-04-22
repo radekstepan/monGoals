@@ -22,32 +22,32 @@
         // 'fetch' colors from css
         var greenColor = jQuery('<div></div>').hide().addClass("green").css('color');
         var redColor = jQuery('<div></div>').hide().addClass("red").css('color');
-        var blueColor = jQuery('<div></div>').hide().addClass("blue").css('color');
 
-        {%- if progress_all -%}
         jQuery(document).ready(function() {
-            jQuery('#meta').append('<div><div id="chart-all" class="chart"></div></div>');
-
-            var r = Raphael("chart-all");
-            var x = [{% for number in range(progress_all|length) -%}
-            {{ number+1 }}{% if not loop.last %},{% endif %}
-            {%- endfor %}];
+            var r = Raphael("chart");
+            var x = [{% for number in range(goal.log|length) -%}
+                        {{ number+1 }}{% if not loop.last %},{% endif %}
+                    {%- endfor %}];
             {% set progress = 0 -%}
-            var y = [{% for entry in progress_all -%}
-            {%- set progress = progress + entry.points -%}
-            {{ progress }}{% if not loop.last %},{% endif %}
-            {%- endfor %}];
+            var y = [{% for entry in goal.log|sort_log -%}
+                        {%- set progress = progress + entry.points -%}
+                        {{ (progress * 100) / goal.points.target }}{% if not loop.last %},{% endif %}
+                    {%- endfor %}];
 
-            r.g.linechart(0, 0, 500, 60, x, y, { shade:true, "colors":[blueColor] });
+            {% if (goal.points.target * (goal.points.logged / 100)) > ((meta.now - goal.date.begin) / (goal.date.end - goal.date.begin)) -%}
+            r.g.linechart(0, 0, 300, 200, x, [y, 100], { shade:true, "colors":[greenColor] });
+            {%- else -%}
+            r.g.linechart(0, 0, 300, 200, x, [y, 100], { shade:true, "colors":[redColor] });
+            {%- endif -%}
         });
-        {%- endif -%}
     </script>
 </head>
 <body>
 
 <header>
-    <a href="{{ url_for('goals.new') }}">New goal</a>
-    Your goals
+    <a href="{{ url_for('goals.log', id=goal._id) }}">Log progress &rarr;</a>
+    <a href="{{ url_for('goals.all') }}">&larr; Back to all goals</a>
+    {{ goal.name }}
 </header>
 
 <div id="meta">
@@ -113,37 +113,66 @@
         <p>last 30 days</p>
     </div>
     {% endif -%}
+
+    <div>
+        {{ goal.points.logged }}p <span></span>
+        <p>current</p>
+    </div>
+    <div>
+        {{ goal.points.target }}p <span></span>
+        <p>total</p>
+    </div>
 </div>
 
 <div class="clear"></div>
 
 <article>
-    {% for goal in goals %}
-    <a href="{{ url_for('goals.goal', id=goal._id) }}">
+    <div class="part">
         <div class="column">
-            <h2>{{ goal.name }}</h2>
-            <h3>{{ goal.date.end|timestamp_distance }}, started {{ goal.date.begin|timestamp_distance }}</h3>
-            <div id="chart-{{ loop.index }}" class="chart"></div>
+            <h2>Description</h2>
+            <p>{{ goal.description }}</p>
         </div>
-    </a>
-    <script type="text/javascript" charset="utf-8">
-        var r = Raphael("chart-{{ loop.index }}");
-        var x = [{% for number in range(goal.log|length) -%}
-        {{ number+1 }}{% if not loop.last %},{% endif %}
-        {%- endfor %}];
-        {% set progress = 0 -%}
-        var y = [{% for entry in goal.log|sort_log -%}
-        {%- set progress = progress + entry.points -%}
-        {{ (progress * 100) / goal.points.target }}{% if not loop.last %},{% endif %}
-        {%- endfor %}];
+        <div class="column">
+            <h2>Currency</h2>
+            <table>
+                {% for entry in goal.points.currency %}
+                    <tr>
+                        <td><b>{{ entry.points }}p</b></td>
+                        <td>{{ entry.name }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
 
-        {% if (goal.points.target * (goal.points.logged / 100)) > ((meta.now - goal.date.begin) / (goal.date.end - goal.date.begin)) -%}
-        r.g.linechart(0, 000, 300, 200, x, [y, 100], { shade:true, "colors":[greenColor] });
-        {%- else -%}
-        r.g.linechart(0, 000, 300, 200, x, [y, 100], { shade:true, "colors":[redColor] });
-        {%- endif %}
-    </script>
-    {% endfor %}
+        <div class="clear"></div>
+
+        <div class="column">
+            <h2>Progress</h2>
+            <h3>{{ goal.date.end|timestamp_distance }}, started {{ goal.date.begin|timestamp_distance }}</h3>
+            <div id="chart" class="chart"></div>
+        </div>
+        <div class="column">
+            <h2>Reward</h2>
+            <center><img src="{{ url_for('static', filename='img/'+goal.reward) }}" style="max-width:300px;max-height:222px;" /></center>
+        </div>
+    </div>
+    <div class="part">
+        <div class="column wide">
+            <h2>Log</h2>
+            <table>
+                {% for entry in goal.log|reverse %}
+                    <tr class="{% if loop.last %}last{% endif %}">
+                        <td><b>{{ entry.points }}p</b></td>
+                        <td>
+                            {{ entry.points.name }}
+                            <p class="light">{{ entry.description }}</p>
+                        </td>
+                        <td><span class="nobr">{{ entry.date|timestamp_format }}</span></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
 </article>
 
 </body>

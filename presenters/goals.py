@@ -54,7 +54,7 @@ def new():
                 'target': int(request.form['points[target]']),
                 'logged': 0,
                 'currency': [] }
-
+            
             for n in range(10):
                 if 'points[name-'+str(n)+']' in request.form and len(request.form['points[name-'+str(n)+']']) > 0:
                     currency = {
@@ -66,9 +66,17 @@ def new():
 
         # target value system
         else:
-            goal['target'] = {
-                'current': request.form['target[current]'],
-                'end': request.form['target[end]'] }
+            goal['values'] = {
+                'begin': float(request.form['values[begin]']),
+                'end': float(request.form['values[end]']),
+                'current': float(request.form['values[begin]'])
+            }
+            goal['points'] = {
+                'target': int(request.form['target[points]']),
+                'logged': 0,
+                'conversion': (float(request.form['values[end]']) - float(request.form['values[begin]'])) / float(request.form['target[points]']),
+                'unit': request.form['unit']
+            }
 
         # save
         g = Goals()
@@ -87,7 +95,7 @@ def goal(id):
     goal = g.find_one(id)
     meta = m.from_log(goal['log'])
 
-    return render_template('goal.html', **locals())
+    return render_template(goal['variant']+'-goal.html', **locals())
 
 @goals.route('/goal/<id>/log', methods=['GET', 'POST'])
 def log(id):
@@ -96,23 +104,45 @@ def log(id):
     goal = g.find_one(id)
     if goal:
         if request.method == 'POST':
-            entry = {
-                'points': goal['points']['currency'][int(request.form['points'])],
-                'description': request.form['description'],
-                'date': utils.timestamp_new(
-                    year = request.form['date[year]'],
-                    month = request.form['date[month]'],
-                    day = request.form['date[day]'])
-            }
-            
+            # fetch the log
             log = goal['log']
+            if goal['variant'] == 'value':
+                if not log: # difference from the beginning
+                    points = (float(request.form['value']) - goal['values']['begin']) / goal['points']['conversion']
+                else: # difference from last log
+                    points = (float(request.form['value']) - log[-1]['value']) / goal['points']['conversion']
+                entry = {
+                    'value': round(float(request.form['value']), 1),
+                    'points': round(points, 1),
+                    'description': request.form['description'],
+                    'date': utils.timestamp_new(
+                        year = request.form['date[year]'],
+                        month = request.form['date[month]'],
+                        day = request.form['date[day]'])
+                }
+                # increment current value
+                g.update(id, 'values.current', round(float(request.form['value']), 1))
+            else:
+                entry = {
+                    'points': goal['points']['currency'][int(request.form['points'])]['points'],
+                    'name': goal['points']['currency'][int(request.form['points'])]['name'],
+                    'description': request.form['description'],
+                    'date': utils.timestamp_new(
+                        year = request.form['date[year]'],
+                        month = request.form['date[month]'],
+                        day = request.form['date[day]'])
+                }
+
+            # append to the log
             log.append(entry)
 
+            # update the entry
             g.update(id, 'log', log)
-            g.increment(id, 'points.logged', entry['points']['points'])
+            # increment running total of logged points
+            g.increment(id, 'points.logged', entry['points'])
 
             return redirect(url_for('goals.goal', id=id))
         else:
-            return render_template('log.html', **locals())
+            return render_template(goal['variant']+'-log.html', **locals())
     else:
         return redirect(url_for('goals.all'))

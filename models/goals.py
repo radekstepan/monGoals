@@ -22,7 +22,7 @@ class Goals:
         self.table.update({'_id': ObjectId(id)}, {"$set": {what: dict}})
 
     def increment(self, id, what, value):
-        self.table.update({'_id': ObjectId(id)}, {"$inc": {what: int(value)}})
+        self.table.update({'_id': ObjectId(id)}, {"$inc": {what: value}})
 
     def to_list(self, object):
         list = []

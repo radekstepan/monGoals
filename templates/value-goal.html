@@ -30,7 +30,7 @@
                     {%- endfor %}];
             {% set progress = 0 -%}
             var y = [{% for entry in goal.log|sort_log -%}
-                        {%- set progress = progress + entry.points.points -%}
+                        {%- set progress = progress + entry.points -%}
                         {{ (progress * 100) / goal.points.target }}{% if not loop.last %},{% endif %}
                     {%- endfor %}];
 
@@ -115,12 +115,16 @@
     {% endif -%}
 
     <div>
-        {{ goal.points.target - goal.points.logged }}p <span></span>
-        <p>remaining</p>
+        {{ goal['values'].begin }}{{ goal.points.unit }} <span></span>
+        <p>beginning</p>
     </div>
     <div>
-        {{ goal.points.target }}p <span></span>
-        <p>total</p>
+        {{ goal['values'].current }}{{ goal.points.unit }} <span></span>
+        <p>current</p>
+    </div>
+    <div>
+        {{ goal['values'].end }}{{ goal.points.unit }} <span></span>
+        <p>target</p>
     </div>
 </div>
 
@@ -133,14 +137,12 @@
             <p>{{ goal.description }}</p>
         </div>
         <div class="column">
-            <h2>Currency</h2>
+            <h2>Conversion</h2>
             <table>
-                {% for entry in goal.points.currency %}
-                    <tr>
-                        <td><b>{{ entry.points }}p</b></td>
-                        <td>{{ entry.name }}</td>
-                    </tr>
-                {% endfor %}
+                <tr>
+                    <td><b>1p</b></td>
+                    <td>for each {{ goal.points.conversion }}{{ goal.points.unit }} logged</td>
+                </tr>
             </table>
         </div>
 
@@ -162,7 +164,7 @@
             <table>
                 {% for entry in goal.log|reverse %}
                     <tr class="{% if loop.last %}last{% endif %}">
-                        <td><b>{{ entry.points.points }}p</b></td>
+                        <td><b>{{ entry.points }}p</b></td>
                         <td>
                             {{ entry.points.name }}
                             <p class="light">{{ entry.description }}</p>
