@@ -12,6 +12,7 @@ import shlex
 from pymongo.binary import Binary
 from werkzeug import secure_filename
 import os
+import Image
 
 def timestamp_new(year=None, month=None, day=None):
     if year != None and month != None and day != None:
@@ -38,6 +39,11 @@ def file_to_mongo(file):
     # upload
     path = os.path.join('static/temp', secure_filename(file.filename))
     file.save(path)
+    # resize
+    size = 300, 222
+    img = Image.open(path)
+    img.thumbnail(size, Image.ANTIALIAS)
+    img.save(path)
     # convert
     string = Binary(open(path, "rb").read().encode("base64"))
     # remove
