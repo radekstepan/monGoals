@@ -246,7 +246,25 @@ def edit(id):
                 goal['points']['unit'] = request.form['unit']
 
         else: # points
-            pass
+
+            # validate
+            if 'points[target]' not in request.form or not request.form['points[target]']:
+                error.append('Target amount of points is missing')
+            if 'points[name-0]' not in request.form or not request.form['points[name-0]']:
+                error.append('At least one currency activity is missing')
+
+            # change the values
+            if not error:
+                goal['points']['target'] = int(request.form['points[target]'])
+
+                currency = []
+                for n in range(10):
+                    if 'points[name-'+str(n)+']' in request.form and len(request.form['points[name-'+str(n)+']']) > 0:
+                        currency.append({
+                            'name': request.form['points[name-'+str(n)+']'],
+                            'points': int(request.form['points[currency-'+str(n)+']']) })
+
+                goal['points']['currency'] = currency
 
         if not error:
             # update
@@ -255,6 +273,7 @@ def edit(id):
             return redirect(url_for('goals.goal', id=id))
 
     goals = utils.sort_list_by_points(g.to_list(g.find_all()))
+    fibonacci = [1,2,3,5,8,13,20]
     date = utils.date_list(goal['date']['end'])
 
     return render_template(goal['variant']+'-edit.html', **locals())

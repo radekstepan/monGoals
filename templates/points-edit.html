@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+
+	<title>mongoals</title>
+
+	<meta name="description" content="mongoals" />
+	<meta name="author" content="Radek Stepan" />
+
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/main.css') }}">
+
+    <script src="{{ url_for('static', filename='js/jquery-1.5.2.min.js') }}" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            jQuery('input.more').click(function() {
+                jQuery('div.currency:hidden').first().show();
+                if (jQuery('div.currency:hidden').length == 0) {
+                    jQuery(this).remove();
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+<header>
+    <a href="{{ url_for('goals.goal', id=goal._id) }}">&larr; Back to the goal</a>
+    Edit '{{ goal.name }}' goal
+</header>
+
+<article>
+    {% if error %}
+    <ul class="error">
+    {% for e in error %}
+        <li>{{ e }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+    <p class="note">All your progress so far will be preserved.</p>
+
+    <form action="{{ url_for('goals.edit', id=goal._id) }}" enctype=multipart/form-data method=post>
+        <div class="part">
+            <div class="column">
+                <h2>About goal</h2>
+                <div>
+                    <label>Name</label>
+                    <input type="text" name="name" value="{{ goal.name }}">
+                </div>
+                <div>
+                    <label>Description</label>
+                    <textarea name="description">{{ goal.description }}</textarea>
+                </div>
+                <div>
+                    <label>Due date</label>
+                    <select name="due-date[day]">
+                        {% for day in range(1, 32) %}
+                            <option value="{{ day }}" {% if date[0] == day %}selected="selected"{% endif %}>{{ day }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="due-date[month]">
+                        {% for month in range(1, 13) %}
+                            <option value="{{ month }}" {% if date[1] == month %}selected="selected"{% endif %}>{{ month }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="due-date[year]">
+                        {% for year in range(2011, 2100) %}
+                            <option value="{{ year }}" {% if date[2] == year %}selected="selected"{% endif %}>{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label>Reward image file</label>
+                    <input type="file" name="file">
+                </div>
+                <input type="submit" value="Save">
+            </div>
+            <div class="column">
+                <div class="variant">
+                    <h2>Points</h2>
+                    <div>
+                        <label>Number of points needed</label>
+                        <input type="text" name="points[target]" value="{{ goal.points.target }}">
+                    </div>
+                    <label>Currency for progress</label>
+                    {% for number in range(10) -%}
+                        {%- if goal['points']['currency'][number] -%}
+                        <div class="currency">
+                            <div class="inline">
+                                <select name="points[currency-{{ number }}]">
+                                    {% for p in fibonacci %}
+                                        <option value="{{ p }}" {% if goal['points']['currency'][number]['points'] == p -%}
+                                        selected="selected"
+                                        {%- endif -%}
+                                        >{{ p }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="inline">
+                                <input type="text" name="points[name-{{ number }}]" value="{{ goal['points']['currency'][number]['name'] }}">
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        {%- else -%}
+                        <div class="currency" style="display:none;">
+                            <div class="inline">
+                                <select name="points[currency-{{ number }}]">
+                                    {% for p in fibonacci %}
+                                        <option value="{{ p }}">{{ p }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="inline">
+                                <input type="text" name="points[name-{{ number }}]">
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        {%- endif -%}
+                    {%- endfor %}
+                    <input type="button" class="more" value="Add more">
+                    <p class="note">Bear in mind that changing the points required will not impact the number of points
+                        you have logged so far.</p>
+                </div>
+            </div>
+            {% if goals %}
+            <div class="column">
+                <h2>Current goals</h2>
+                <table>
+                    {% for g in goals %}
+                        <tr>
+                            <td><b>{{ g.points.target }}p</b></td>
+                            <td>{{ g.name }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    </form>
+
+    <div class="clear"></div>
+</article>
+
+</body>
+</html>
