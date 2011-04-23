@@ -51,10 +51,10 @@
 </header>
 
 <div id="meta">
-    {%- if meta.today.current.points > 0 %}
+    {%- if meta.today.current.points != 0 %}
     <div>
         {{ meta.today.current.points }}p
-        {% if meta.today.previous.points > 0 %}
+        {% if meta.today.previous.points != 0 %}
             {%- set percent = (((meta.today.current.points * 100) / meta.today.previous.points) - 100)|round(1) -%}
             {% if percent > 0 %}
             <span class="green">(+{{ percent }}%)</span>
@@ -72,10 +72,10 @@
     </div>
     {% endif -%}
 
-    {%- if meta.seven.current.points > 0 %}
+    {%- if meta.seven.current.points != 0 %}
     <div>
         {{ meta.seven.current.points }}p
-        {% if meta.seven.previous.points > 0 %}
+        {% if meta.seven.previous.points != 0 %}
             {%- set percent = (((meta.seven.current.points * 100) / meta.seven.previous.points) - 100)|round(1) -%}
             {% if percent > 0 %}
             <span class="green">(+{{ percent }}%)</span>
@@ -93,10 +93,10 @@
     </div>
     {% endif -%}
 
-    {%- if meta.thirty.current.points > 0 %}
+    {%- if meta.thirty.current.points != 0 %}
     <div>
         {{ meta.thirty.current.points }}p
-        {% if meta.thirty.previous.points > 0 %}
+        {% if meta.thirty.previous.points != 0 %}
             {%- set percent = (((meta.thirty.current.points * 100) / meta.thirty.previous.points) - 100)|round(1) -%}
             {% if percent > 0 %}
             <span class="green">(+{{ percent }}%)</span>
