@@ -18,6 +18,9 @@ header { background:#000; font-size:15px; font-weight:bold; color:#FFF; padding:
 
 ul.error { margin:0 0 10px 12px; font-weight:bold; color:#BC4E3D; }
 
+p.note  { font-size:12px; margin:0 0 10px 12px; }
+div.column p.note  { margin:0; }
+
 article { margin-top:20px; }
 
 div.part { float:left; }

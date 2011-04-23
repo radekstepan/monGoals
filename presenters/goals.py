@@ -194,11 +194,67 @@ def remove(id):
     g.remove(id)
     return redirect(url_for('goals.all'))
 
-@goals.route('/goal/<id>/close')
 @goals.route('/goal/<id>/archive')
+@goals.route('/goal/<id>/close')
 @goals.route('/goal/<id>/hide')
 def archive(id):
     '''hide from main page'''
     g = Goals()
     g.update(id, 'status', 'archived')
     return redirect(url_for('goals.all'))
+
+@goals.route('/goal/<id>/edit', methods=['GET', 'POST'])
+def edit(id):
+    '''goal detail'''
+    g = Goals()
+    goal = g.find_one(id)
+
+    if request.method == 'POST':
+        error = []
+
+        # change name, description, due date and reward file
+        if 'name' in request.form and request.form['name']:
+            goal['name'] = request.form['name']
+        if 'description' in request.form and request.form['description']:
+            goal['description'] = request.form['description']
+        if 'file' in request.files and request.files['file']:
+            goal['reward'] = utils.file_to_mongo(request.files['file'])
+
+        goal['date']['end'] = utils.timestamp_new(
+                year = request.form['due-date[year]'],
+                month = request.form['due-date[month]'],
+                day = request.form['due-date[day]'])
+
+        # two different systems
+        if goal['variant'] == 'value': # target value
+
+            # validate
+            if 'values[begin]' not in request.form or not request.form['values[begin]']:
+                error.append('A starting value is missing')
+            if 'values[end]' not in request.form or not request.form['values[end]']:
+                error.append('A target value is missing')
+            if 'target[points]' not in request.form or not request.form['target[points]']:
+                error.append('Target amount of points is missing')
+
+            # change the values
+            if not error:
+                goal['values']['begin'] = float(request.form['values[begin]'])
+                goal['values']['end'] = float(request.form['values[end]'])
+
+                goal['points']['target'] = int(request.form['target[points]'])
+                goal['points']['conversion'] = (float(request.form['values[end]']) - float(request.form['values[begin]'])) / float(request.form['target[points]'])
+                goal['points']['unit'] = request.form['unit']
+
+        else: # points
+            pass
+
+        if not error:
+            # update
+            g.replace(goal['_id'], goal)
+
+            return redirect(url_for('goals.goal', id=id))
+
+    goals = utils.sort_list_by_points(g.to_list(g.find_all()))
+    date = utils.date_list(goal['date']['end'])
+
+    return render_template(goal['variant']+'-edit.html', **locals())

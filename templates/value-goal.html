@@ -161,6 +161,26 @@
             <h2>Reward</h2>
             <center><img src="data:image/jpeg;base64,{{ goal.reward }}" style="max-width:300px;max-height:222px;" /></center>
         </div>
+
+        <div class="clear"></div>
+
+        <div class="column wide">
+            <h2>You can</h2>
+            <table>
+                <tr>
+                    <td><b><a href="{{ url_for('goals.archive', id=goal._id) }}">Archive</a></b></td>
+                    <td>All the progress is preserved but the goal does not show on the main listing</td>
+                </tr>
+                <tr>
+                    <td><b><a href="{{ url_for('goals.remove', id=goal._id) }}">Remove</a></b></td>
+                    <td>All traces of the goal are removed</td>
+                </tr>
+                <tr>
+                    <td><b><a href="{{ url_for('goals.edit', id=goal._id) }}">Edit</a></b></td>
+                    <td>Change some aspects of this goal</td>
+                </tr>
+            </table>
+        </div>
     </div>
     <div class="part">
         <div class="column wide">

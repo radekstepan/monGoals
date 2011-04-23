@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+
+	<title>mongoals</title>
+
+	<meta name="description" content="mongoals" />
+	<meta name="author" content="Radek Stepan" />
+
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+
+<header>
+    <a href="{{ url_for('goals.goal', id=goal._id) }}">&larr; Back to the goal</a>
+    Edit '{{ goal.name }}' goal
+</header>
+
+<article>
+    {% if error %}
+    <ul class="error">
+    {% for e in error %}
+        <li>{{ e }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+    <p class="note">All your progress so far will be preserved.</p>
+
+    <form action="{{ url_for('goals.edit', id=goal._id) }}" enctype=multipart/form-data method=post>
+        <div class="part">
+            <div class="column">
+                <h2>About goal</h2>
+                <div>
+                    <label>Name</label>
+                    <input type="text" name="name" value="{{ goal.name }}">
+                </div>
+                <div>
+                    <label>Description</label>
+                    <textarea name="description">{{ goal.description }}</textarea>
+                </div>
+                <div>
+                    <label>Due date</label>
+                    <select name="due-date[day]">
+                        {% for day in range(1, 32) %}
+                            <option value="{{ day }}" {% if date[0] == day %}selected="selected"{% endif %}>{{ day }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="due-date[month]">
+                        {% for month in range(1, 13) %}
+                            <option value="{{ month }}" {% if date[1] == month %}selected="selected"{% endif %}>{{ month }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="due-date[year]">
+                        {% for year in range(2011, 2100) %}
+                            <option value="{{ year }}" {% if date[2] == year %}selected="selected"{% endif %}>{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label>Reward image file</label>
+                    <input type="file" name="file">
+                </div>
+                <input type="submit" value="Save">
+            </div>
+            <div class="column">
+                <div class="variant">
+                    <h2>Target value</h2>
+                    <div>
+                        <label>Starting value</label>
+                        <input type="text" name="values[begin]" value="{{ goal['values'].begin }}">
+                    </div>
+                    <div>
+                        <label>End value</label>
+                        <input type="text" name="values[end]" value="{{ goal['values'].end }}">
+                    </div>
+                    <div>
+                        <label>Unit</label>
+                        <input type="text" name="unit" value="{{ goal.points.unit }}">
+                    </div>
+                    <div>
+                        <label>Number of points needed</label>
+                        <input type="text" name="target[points]" value="{{ goal.points.target }}">
+                    </div>
+                    <p class="note">Bear in mind that changing target values or points required will not impact the
+                        number of points you have logged so far.</p>
+                </div>
+            </div>
+            {% if goals %}
+            <div class="column">
+                <h2>Current goals</h2>
+                <table>
+                    {% for g in goals %}
+                        <tr>
+                            <td><b>{{ g.points.target }}p</b></td>
+                            <td>{{ g.name }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    </form>
+
+    <div class="clear"></div>
+</article>
+
+</body>
+</html>

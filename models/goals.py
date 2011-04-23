@@ -25,6 +25,9 @@ class Goals:
     def update(self, id, what, dict):
         self.table.update({'_id': ObjectId(id)}, {"$set": {what: dict}})
 
+    def replace(self, id, dict):
+        self.table.update({'_id': ObjectId(id)}, dict, True)
+
     def remove(self, id):
         self.table.remove({'_id': ObjectId(id)})
 
