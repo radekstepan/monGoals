@@ -119,6 +119,7 @@
 
 <article>
     {% for goal in goals %}
+    {%- if goal.status != 'archived' -%}
     <a href="{{ url_for('goals.goal', id=goal._id) }}">
         <div class="column">
             <h2>{{ goal.name }}</h2>
@@ -147,6 +148,7 @@
             jQuery("#chart-{{ loop.index }}").append('<p>Your progress will show here soon</p>');
         {%- endif %}
     </script>
+    {%- endif -%}
     {% endfor %}
     <div class="clear"></div>
 </article>

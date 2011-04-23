@@ -39,7 +39,7 @@ def new():
 
         if not error:
             # meta
-            goal = {'name': request.form['name'], 'description': request.form['description']}
+            goal = {'name': request.form['name'], 'description': request.form['description'], 'status': 'active'}
 
             # dates
             goal['date'] = {
@@ -129,11 +129,12 @@ def log(id):
     goal = g.find_one(id)
     if goal:
         if request.method == 'POST':
+            error = []
+            
             # fetch the log
             log = goal['log']
             if goal['variant'] == 'value':
                 # validate
-                error = []
                 if 'value' not in request.form or not request.form['value']: error.append('New value is missing')
 
                 if not error:
@@ -183,3 +184,20 @@ def log(id):
         return render_template(goal['variant']+'-log.html', **locals())
     else:
         return redirect(url_for('goals.all'))
+
+@goals.route('/goal/<id>/remove')
+@goals.route('/goal/<id>/delete')
+def remove(id):
+    '''remove'''
+    g = Goals()
+    g.remove(id)
+    return redirect(url_for('goals.all'))
+
+@goals.route('/goal/<id>/close')
+@goals.route('/goal/<id>/archive')
+@goals.route('/goal/<id>/hide')
+def archive(id):
+    '''hide from main page'''
+    g = Goals()
+    g.update(id, 'status', 'archived')
+    return redirect(url_for('goals.all'))

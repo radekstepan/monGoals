@@ -3,6 +3,7 @@
 
 # db
 from bson.objectid import ObjectId
+from pymongo import ASCENDING
 from db import db
 
 class Goals:
@@ -13,13 +14,19 @@ class Goals:
         return self.table.find_one({"_id": ObjectId(id)})
 
     def find_all(self):
-        return self.table.find()
+        return self.table.find().sort("date.end", ASCENDING)
+
+    def find(self, where):
+        return self.table.find(where).sort("date.end", ASCENDING)
 
     def save(self, dict):
         return self.table.insert(dict)
 
     def update(self, id, what, dict):
         self.table.update({'_id': ObjectId(id)}, {"$set": {what: dict}})
+
+    def remove(self, id):
+        self.table.remove({'_id': ObjectId(id)})
 
     def increment(self, id, what, value):
         self.table.update({'_id': ObjectId(id)}, {"$inc": {what: value}})
