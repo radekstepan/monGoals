@@ -23,6 +23,8 @@ div.column p.note  { margin:0; }
 
 article { margin-top:20px; }
 
+article a.goal { text-decoration:none; }
+
 div.part { float:left; }
 
 div.column { float:left; padding:2px 12px; width:300px; margin-bottom:20px; }
@@ -39,6 +41,7 @@ div.column { float:left; padding:2px 12px; width:300px; margin-bottom:20px; }
                 div.column table tr td span.nobr { white-space:nowrap; }
 
 div.column.wide { width:624px; }
+div.column.smalltext { font-size:12px; }
 
 form label { display:block; }
 form div.inline { float:left; }

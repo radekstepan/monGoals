@@ -19,10 +19,6 @@
     <script src="{{ url_for('static', filename='js/jquery-1.5.2.min.js') }}" type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript" charset="utf-8">
-        // 'fetch' colors from css
-        var greenColor = jQuery('<div></div>').hide().addClass("green").css('color');
-        var redColor = jQuery('<div></div>').hide().addClass("red").css('color');
-
         jQuery(document).ready(function() {
             {% if goal.log|length > 1 -%}
                 var r = Raphael("chart");
@@ -47,6 +43,15 @@
     </script>
 </head>
 <body>
+<script type="text/javascript" charset="utf-8">
+    // 'fetch' colors from css (verboseness due to Chrome)
+    var greenColor = jQuery('body').append(
+            jQuery('<div id="green"></div>').hide().addClass("green")).find("#green").css('color');
+    var redColor = jQuery('body').append(
+            jQuery('<div id="red"></div>').hide().addClass("red")).find("#red").css('color');
+    var blueColor = jQuery('body').append(
+            jQuery('<div id="blue"></div>').hide().addClass("blue")).find("#blue").css('color');
+</script>
 
 <header>
     <a href="{{ url_for('goals.log', id=goal._id) }}">Log progress &rarr;</a>
@@ -162,7 +167,7 @@
 
         <div class="clear"></div>
 
-        <div class="column wide">
+        <div class="column smalltext">
             <h2>You can</h2>
             <table>
                 <tr>

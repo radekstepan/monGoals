@@ -19,12 +19,7 @@
     <script src="{{ url_for('static', filename='js/jquery-1.5.2.min.js') }}" type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript" charset="utf-8">
-        // 'fetch' colors from css
-        var greenColor = jQuery('<div></div>').hide().addClass("green").css('color');
-        var redColor = jQuery('<div></div>').hide().addClass("red").css('color');
-        var blueColor = jQuery('<div></div>').hide().addClass("blue").css('color');
-
-        {%- if progress_all -%}
+        {% if progress_all -%}
         jQuery(document).ready(function() {
             jQuery('#meta').append('<div><div id="chart-all" class="chart"></div></div>');
 
@@ -44,6 +39,15 @@
     </script>
 </head>
 <body>
+<script type="text/javascript" charset="utf-8">
+    // 'fetch' colors from css (verboseness due to Chrome)
+    var greenColor = jQuery('body').append(
+            jQuery('<div id="green"></div>').hide().addClass("green")).find("#green").css('color');
+    var redColor = jQuery('body').append(
+            jQuery('<div id="red"></div>').hide().addClass("red")).find("#red").css('color');
+    var blueColor = jQuery('body').append(
+            jQuery('<div id="blue"></div>').hide().addClass("blue")).find("#blue").css('color');
+</script>
 
 <header>
     <a href="{{ url_for('goals.new') }}">New goal</a>
@@ -120,7 +124,7 @@
 <article>
     {% for goal in goals %}
     {%- if goal.status != 'archived' -%}
-    <a href="{{ url_for('goals.goal', id=goal._id) }}">
+    <a href="{{ url_for('goals.goal', id=goal._id) }}" class="goal">
         <div class="column">
             <h2>{{ goal.name }}</h2>
             <h3>{{ goal.date.end|timestamp_distance }}, started {{ goal.date.begin|timestamp_distance }}</h3>
