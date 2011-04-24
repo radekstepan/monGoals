@@ -220,6 +220,14 @@ def archive(id):
     g.update(id, 'status', 'archived')
     return redirect(url_for('goals.all'))
 
+@goals.route('/export')
+@goals.route('/backup')
+def export():
+    '''export all entries'''
+    g = Goals()
+    goals = g.to_list(g.find_all())
+    return str(goals)
+
 @goals.route('/goal/<id>/edit', methods=['GET', 'POST'])
 def edit(id):
     '''goal detail'''
