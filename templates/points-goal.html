@@ -144,6 +144,11 @@
     <div class="part">
         <div class="column">
             <h2>Description</h2>
+            <div class="tags">
+                {%- for tag in goal.tags -%}
+                <a href="{{ url_for('goals.all', tag=tag) }}">{{ tag }}</a>{% if not loop.last %}, {% endif %}
+                {%- endfor -%}
+            </div>
             <p>{{ goal.description }}</p>
         </div>
         <div class="column">
@@ -176,16 +181,16 @@
             <h2>You can</h2>
             <table>
                 <tr>
+                    <td><b><a href="{{ url_for('goals.edit', id=goal._id) }}">Edit</a></b></td>
+                    <td>Change some aspects of this goal</td>
+                </tr>
+                <tr>
                     <td><b><a href="{{ url_for('goals.archive', id=goal._id) }}">Archive</a></b></td>
                     <td>All the progress is preserved but the goal does not show on the main listing</td>
                 </tr>
                 <tr>
                     <td><b><a href="{{ url_for('goals.remove', id=goal._id) }}">Remove</a></b></td>
                     <td>All traces of the goal are removed</td>
-                </tr>
-                <tr>
-                    <td><b><a href="{{ url_for('goals.edit', id=goal._id) }}">Edit</a></b></td>
-                    <td>Change some aspects of this goal</td>
                 </tr>
             </table>
         </div>

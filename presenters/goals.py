@@ -16,18 +16,25 @@ import utils
 goals = Module(__name__)
 
 @goals.route('/')
-def all():
+@goals.route('/tag/<tag>')
+def all(tag=None):
     '''list all goals'''
     g, m, p = Goals(), Meta(), Progress()
 
-    goals = g.to_list(g.find_all())
+    # tag/notag
+    if tag:
+        goals = g.to_list(g.find({'tags': tag}))
+    else:
+        goals = g.to_list(g.find_all())
+
+    # build progress & meta
     for goal in goals:
         m.from_log(goal['log'])
         p.add_log(goal['log'])
     meta = m.meta
     progress_all = p.sort_log()
 
-    return render_template('main.html', goals=goals, meta=meta, progress_all=progress_all)
+    return render_template('main.html', goals=goals, meta=meta, progress_all=progress_all, tag=tag)
 
 @goals.route('/new', methods=['GET', 'POST'])
 def new():
@@ -50,6 +57,11 @@ def new():
                         month = request.form['due-date[month]'],
                         day = request.form['due-date[day]'])
             }
+
+            # tags
+            if 'tags' in request.form and request.form['tags']:
+                tags = [utils.slugify(tag) for tag in request.form['tags'].split(',')]
+                goal['tags'] = tags
 
             # save image
             c = CDN()
@@ -223,7 +235,6 @@ def edit(id):
         if 'description' in request.form and request.form['description']:
             goal['description'] = request.form['description']
         if 'file' in request.files and request.files['file']:
-            goal['reward'] = utils.file_to_mongo(request.files['file'])
             # save image
             c = CDN()
             image = c.replace(goal['reward'], { 'image': utils.file_to_mongo(request.files['file'])})
@@ -232,6 +243,11 @@ def edit(id):
                 year = request.form['due-date[year]'],
                 month = request.form['due-date[month]'],
                 day = request.form['due-date[day]'])
+
+        # tags
+        if 'tags' in request.form and request.form['tags']:
+            tags = [utils.slugify(tag) for tag in request.form['tags'].split(',')]
+            goal['tags'] = tags
 
         # two different systems
         if goal['variant'] == 'value': # target value

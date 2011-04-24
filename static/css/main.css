@@ -18,19 +18,21 @@ header { background:#000; font-size:15px; font-weight:bold; color:#FFF; padding:
 
 ul.error { margin:0 0 10px 12px; font-weight:bold; color:#BC4E3D; }
 
-p.note  { font-size:12px; margin:0 0 10px 12px; }
-div.column p.note  { margin:0; }
+p.note  { font-size:13px; margin:0 0 10px 12px; line-height:14px; }
+div.column p.note  { font-size:11px; margin:0; line-height:14px; }
 
 article { margin-top:20px; }
 
 article a.goal { text-decoration:none; }
+
+div.tags { font-size:12px; line-height:15px; }
 
 div.part { float:left; }
 
 div.column { float:left; padding:2px 12px; width:300px; margin-bottom:20px; }
     div.column div.chart { width:300px; height:200px; }
         div.column div.chart p { width:100%; text-align:center; padding-top:30%; }
-    div.column h2 { font-size:18px; font-weight:bold; line-height:20px; }
+    div.column h2 { font-size:18px; font-weight:bold; line-height:20px; margin-bottom:5px; }
     div.column h3 { font-size:15px; color:#919191; text-transform:uppercase; font-weight:bold; }
     div.column p { line-height:24px; }
         div.column p.light { color:#919191; }
@@ -45,3 +47,6 @@ div.column.smalltext { font-size:12px; }
 
 form label { display:block; }
 form div.inline { float:left; }
+
+form div.column div { margin-bottom:10px; }
+form div.column div.variant { margin:0px; }

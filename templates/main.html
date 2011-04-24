@@ -52,8 +52,10 @@
 <header>
     <a href="{{ url_for('goals.new') }}">New goal</a>
     Your goals
+    {%- if tag %} tagged "{{ tag }}" <a href="{{ url_for('goals.all') }}">&larr; Back to all goals</a>{% endif %}
 </header>
 
+{%- if meta.today.current.points != 0 or meta.seven.current.points != 0 or meta.thirty.current.points != 0 -%}
 <div id="meta">
     {%- if meta.today.current.points != 0 %}
     <div>
@@ -118,19 +120,24 @@
     </div>
     {% endif -%}
 </div>
-
 <div class="clear"></div>
+{%- endif -%}
 
 <article>
     {% for goal in goals %}
     {%- if goal.status != 'archived' -%}
-    <a href="{{ url_for('goals.goal', id=goal._id) }}" class="goal">
-        <div class="column">
-            <h2>{{ goal.name }}</h2>
-            <h3>{{ goal.date.end|timestamp_distance }}, started {{ goal.date.begin|timestamp_distance }}</h3>
-            <div id="chart-{{ loop.index }}" class="chart"></div>
+    <div class="column">
+        <a href="{{ url_for('goals.goal', id=goal._id) }}" class="goal"><h2>{{ goal.name }}</h2></a>
+        <div class="tags">
+            {%- for tag in goal.tags -%}
+            <a href="{{ url_for('goals.all', tag=tag) }}">{{ tag }}</a>{% if not loop.last %}, {% endif %}
+            {%- endfor -%}
         </div>
-    </a>
+        <h3>{{ goal.date.end|timestamp_distance }}, started {{ goal.date.begin|timestamp_distance }}</h3>
+        <a href="{{ url_for('goals.goal', id=goal._id) }}" class="goal">
+            <div id="chart-{{ loop.index }}" class="chart"></div>
+        </a>
+    </div>
     <script type="text/javascript" charset="utf-8">
         {% if goal.log|length > 1 -%}
             var r = Raphael("chart-{{ loop.index }}");

@@ -80,7 +80,13 @@
                 </div>
                 <div>
                     <label>Reward image file</label>
+                    <p class="note">PNG, JPEG are fine.</p>
                     <input type="file" name="file">
+                </div>
+                <div>
+                    <label>Tags</label>
+                    <p class="note">Comma delineated, do not worry about spaces.</p>
+                    <input type="text" name="tags">
                 </div>
                 <input type="submit" value="Save">
             </div>
@@ -90,6 +96,7 @@
                     <h2>Points <a class="switcher">or target value?</a></h2>
                     <div>
                         <label>Number of points needed</label>
+                        <p class="note">This is the "complexity" of the goal.</p>
                         <input type="text" name="points[target]">
                     </div>
                     <label>Currency for progress</label>
@@ -126,6 +133,7 @@
                     </div>
                     <div>
                         <label>Number of points needed</label>
+                        <p class="note">This is the "complexity" of the goal.</p>
                         <input type="text" name="target[points]">
                     </div>
                 </div>
