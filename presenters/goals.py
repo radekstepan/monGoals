@@ -7,6 +7,7 @@ from flask import render_template, request, redirect
 from flask.helpers import url_for
 
 from models.goals import Goals
+from models.cdn import CDN
 from models.meta import Meta
 from models.progress import Progress
 
@@ -50,7 +51,11 @@ def new():
                         day = request.form['due-date[day]'])
             }
 
-            goal['reward'] = utils.file_to_mongo(request.files['file'])
+            # save image
+            c = CDN()
+            image = c.save({ 'image': utils.file_to_mongo(request.files['file'])})
+            goal['reward'] = image
+
             goal['variant'] = request.form['variant']
             goal['log'] = []
 
@@ -219,6 +224,9 @@ def edit(id):
             goal['description'] = request.form['description']
         if 'file' in request.files and request.files['file']:
             goal['reward'] = utils.file_to_mongo(request.files['file'])
+            # save image
+            c = CDN()
+            image = c.replace(goal['reward'], { 'image': utils.file_to_mongo(request.files['file'])})
 
         goal['date']['end'] = utils.timestamp_new(
                 year = request.form['due-date[year]'],

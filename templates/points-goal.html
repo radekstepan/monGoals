@@ -39,6 +39,11 @@
             {%- else -%}
                 jQuery("#chart").append('<p>Your progress will show here soon</p>');
             {%- endif %}
+
+            // deliver the image
+            jQuery.get("{{ url_for('cdn.image', id=goal.reward) }}", function(data) {
+                jQuery("#reward img").attr('src', 'data:image/jpeg;base64,' + data);
+            });
         });
     </script>
 </head>
@@ -160,9 +165,9 @@
             <h3>{{ goal.date.end|timestamp_distance }}, started {{ goal.date.begin|timestamp_distance }}</h3>
             <div id="chart" class="chart"></div>
         </div>
-        <div class="column">
+        <div id="reward" class="column">
             <h2>Reward</h2>
-            <center><img src="data:image/jpeg;base64,{{ goal.reward }}" style="max-width:300px;max-height:222px;" /></center>
+            <center><img style="max-width:300px;max-height:222px;" /></center>
         </div>
 
         <div class="clear"></div>

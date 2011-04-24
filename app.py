@@ -24,9 +24,11 @@ def create_app(database, drop=False):
 
     # presenters
     from presenters.goals import goals
+    from presenters.cdn import cdn
 
     # register modules
     app.register_module(goals)
+    app.register_module(cdn)
 
     # template filters
     @app.template_filter('timestamp_format')
