@@ -207,7 +207,8 @@ def log(id):
 @goals.route('/goal/<id>/delete')
 def remove(id):
     '''remove'''
-    g = Goals()
+    g, c = Goals(), CDN()
+    c.remove(g.find_one(id)['reward'])
     g.remove(id)
     return redirect(url_for('goals.all'))
 
