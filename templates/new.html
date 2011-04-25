@@ -138,20 +138,22 @@
                     </div>
                 </div>
             </div>
-            {% if goals %}
+        </div>
+        {% if goals %}
+        <div class="part flex">
             <div class="column">
                 <h2>Current goals</h2>
                 <table>
                     {% for goal in goals %}
-                        <tr>
-                            <td><b>{{ goal.points.target }}p</b></td>
-                            <td>{{ goal.name }}</td>
-                        </tr>
+                    <tr>
+                        <td><b>{{ goal.points.target }}p</b></td>
+                        <td>{{ goal.name }}</td>
+                    </tr>
                     {% endfor %}
                 </table>
             </div>
-            {% endif %}
         </div>
+        {% endif %}
     </form>
 </article>
 
