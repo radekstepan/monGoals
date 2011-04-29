@@ -126,7 +126,7 @@ def new():
 
     g = Goals()
     goals = utils.sort_list_by_points(g.to_list(g.find_all()))
-    fibonacci = [1,2,3,5,8,13,20]
+    fibonacci = [1,2,3,5,8,13,20,35,50,100,150,200,400]
     return render_template('new.html', **locals())
 
 @goals.route('/goal/<id>')
@@ -306,7 +306,7 @@ def edit(id):
             return redirect(url_for('goals.goal', id=id))
 
     goals = utils.sort_list_by_points(g.to_list(g.find_all()))
-    fibonacci = [1,2,3,5,8,13,20]
+    fibonacci = [1,2,3,5,8,13,20,35,50,100,150,200,400]
     date = utils.date_list(goal['date']['end'])
 
     return render_template(goal['variant']+'-edit.html', **locals())
