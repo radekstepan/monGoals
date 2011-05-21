@@ -136,7 +136,6 @@ def goal(id):
 
     goal = g.find_one(id)
     meta = m.from_log(goal['log'])
-    print meta
 
     return render_template(goal['variant']+'-goal.html', **locals())
 

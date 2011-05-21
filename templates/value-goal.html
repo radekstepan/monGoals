@@ -31,7 +31,7 @@
                             {{ (progress * 100) / goal.points.target }}{% if not loop.last %},{% endif %}
                         {%- endfor %}];
 
-                {% if (goal.points.target * (goal.points.logged / 100)) > ((meta.now - goal.date.begin) / (goal.date.end - goal.date.begin)) -%}
+                {% if ((goal.points.logged * 100) / goal.points.target) > (((meta.now - goal.date.begin) * 100) / (goal.date.end - goal.date.begin)) -%}
                 r.g.linechart(0, 0, 300, 200, x, [y, 100], { shade:true, "colors":[greenColor] });
                 {%- else -%}
                 r.g.linechart(0, 0, 300, 200, x, [y, 100], { shade:true, "colors":[redColor] });
