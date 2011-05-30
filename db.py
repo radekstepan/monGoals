@@ -11,6 +11,10 @@ def init_connection(database):
     connection = Connection()
     db = connection[database]
 
+def database_name():
+    '''get database name'''
+    return db.database.database.name
+
 def table_drop(tablename):
     global db
     

@@ -13,6 +13,21 @@ from models.progress import Progress
 
 import utils
 
+# db dump
+from functools import wraps
+import os
+from db import database_name
+
+def dump_db(f):
+    '''decorator for dumping the database to a file'''
+
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        result = f(*args, **kwargs)
+        os.system('mongodump --db ' + database_name())
+        return result
+    return decorated_function
+
 goals = Module(__name__)
 
 @goals.route('/')
@@ -37,6 +52,7 @@ def all(tag=None):
     return render_template('main.html', goals=goals, meta=meta, progress_all=progress_all, tag=tag)
 
 @goals.route('/new', methods=['GET', 'POST'])
+@dump_db
 def new():
     '''create new goal'''
     if request.method == 'POST':
@@ -140,6 +156,7 @@ def goal(id):
     return render_template(goal['variant']+'-goal.html', **locals())
 
 @goals.route('/goal/<id>/log', methods=['GET', 'POST'])
+@dump_db
 def log(id):
     '''log progress on a goal'''
     g = Goals()
@@ -204,6 +221,7 @@ def log(id):
 
 @goals.route('/goal/<id>/remove')
 @goals.route('/goal/<id>/delete')
+@dump_db
 def remove(id):
     '''remove'''
     g, c = Goals(), CDN()
@@ -214,6 +232,7 @@ def remove(id):
 @goals.route('/goal/<id>/archive')
 @goals.route('/goal/<id>/close')
 @goals.route('/goal/<id>/hide')
+@dump_db
 def archive(id):
     '''hide from main page'''
     g = Goals()
@@ -223,12 +242,13 @@ def archive(id):
 @goals.route('/export')
 @goals.route('/backup')
 def export():
-    '''export all entries'''
+    '''export all entries to a string'''
     g = Goals()
     goals = g.to_list(g.find_all())
     return str(goals)
 
 @goals.route('/goal/<id>/edit', methods=['GET', 'POST'])
+@dump_db
 def edit(id):
     '''goal detail'''
     g = Goals()
